@@ -1,0 +1,822 @@
+/* =======================================================================
+Template Name: Dil Hospital
+Author:  SmartEye Adminpanel
+Author URI: www.smarteyeapps.com
+Version: 1.0
+coder name:Prabin Raja
+Description: This Template is created for web template
+======================================================================= */
+
+/* ===================================== Import Less ================================== */
+@import 'variable';
+/* ===================================== Basic CSS ================================== */
+
+* {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+
+}
+img {
+    max-width: 100%;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+    color: #444;
+}
+
+a:hover {
+    color: #444;
+}
+
+ul {
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+a:hover,
+a:focus,
+input,
+textarea {
+    text-decoration: none;
+    outline: none;
+}
+.center{
+    text-align: center;
+}
+.left{
+    text-align: left;
+}
+.right{
+    text-align: right;
+}
+.cp {
+    cursor: pointer
+}
+html,body{
+    height: 100%;
+}
+p {
+    margin-bottom: 0px;
+    width: 100%;
+}
+.no-padding {
+    padding: 0px;
+}
+
+.no-margin {
+    margin: 0px;
+
+}
+.hid{
+    display: none;
+}
+.top-mar{
+    margin-top: 15px;
+}
+.h-100{
+    height: 100%;;
+}
+::placeholder {
+    color: #747f8a !important;
+    font-size: 13px;
+    opacity: .5 !important;
+}
+.container-fluid{
+    padding: 0px;
+}
+h1,h2,h3,h4,h5,h6{
+	font-family: $mouse-500;
+}
+strong{
+	font-family: $mouse-500;
+}
+body{
+    background-color:#f7f7ff !important;
+    font-family: $mouse-300;
+   color: #6A6A6A;
+
+}
+
+.session-title{
+	padding: 30px;
+	margin: 0px;
+	h2{
+		width: 100%;
+		text-align: center;
+
+	}
+	p{
+		max-width: 850px;
+		text-align: center;
+		float: none;
+		margin: auto;
+	}
+	span{
+		float: right;
+		font-style: italic;
+	}
+}
+.inner-title{
+	padding: 20px;
+	padding-left: 0px;
+    margin-bottom: 30px;
+	h2{
+		width: 100%;
+		text-align: center;
+		font-size: 2rem;
+		font-family: $slab;
+	}
+	p{
+		width: 100%;
+		text-align: center;
+	}
+}
+.btn-success{
+	background-color: #a5238e;
+	border-color: #a5238e;
+	&:hover{
+		background-color: #a5238e !important;
+		border-color: #a5238e !important;
+	}
+	&:active{
+		background-color: #a5238e !important;
+		border-color: #a5238e !important;
+	}
+	&:focus{
+		background-color: #a5238e !important;
+		border-color: #a5238e !important;
+		box-shadow: none !important;
+	}
+}
+.btn-info{
+	background-color: #00a8df;
+	border-color: #00a8df;
+	&:hover{
+		background-color: #00a8df !important;
+		border-color: #00a8df !important;
+	}
+	&:active{
+		background-color: #00a8df !important;
+		border-color: #00a8df !important;
+	}
+	&:focus{
+		background-color: #00a8df !important;
+		border-color: #00a8df !important;
+		box-shadow: none !important;
+	}
+}
+.btn{
+	@include card-1();
+}
+.form-control{
+	&:focus{
+		box-shadow: none !important;
+		border:2px solid  #00a8df;
+	}
+
+}
+.btn-light{
+	background-color: #FFF;
+	color: #3F3F3F;
+}
+@media screen and (max-width: 1199px){
+	.container{
+		max-width: 100%;
+	}
+}
+.collapse.show {
+
+    display: block !important;
+
+}
+
+.form-control:focus{
+	box-shadow: none;
+	border: 2px solid #0d7a40 !important;
+}
+.form-control{
+	background-color: #F8F8F8;
+	margin-bottom: 20px;
+	&:focus{
+		background-color: #FFF;
+		border-color: #CCC;
+	}
+}
+/* ===================================== Header CSS ================================== */
+
+header{
+  background-color: #FFF;
+    @include shado-1();
+    padding: 0px;
+    .top{
+        padding: 10px;
+    }
+    .call{
+        padding: 12px;
+        i{
+            padding: 15px;
+            background-color: #E0E0E0;
+            border-radius: 50px;
+            margin-right: 10px;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 20px;
+            color: #a5238e;
+            
+        }
+        @media screen and (max-width: 1095px){
+            padding-right: 0px;
+        }
+    }
+    .call-r{
+        padding-right: 0px;
+        @media screen and (max-width: 1095px){
+            padding: 0px;
+        }
+    }
+    .logo{
+        text-align: center;
+        @media screen and (max-width: 991px){
+            text-align: left;
+        }
+        img{
+          width: 220px;  
+            @media screen and (max-width: 405px){
+                width: 180px;
+            }
+        }
+    }
+    nav{
+        border-top: 1px solid #CCC;
+        ul{
+            @media screen and (max-width: 767px){
+                width: 100%;
+            }
+            li{
+                float: left;
+                padding: 15px 30px;;
+                font-family: $mouse-500;
+                @media screen and (max-width: 1027px){
+                    padding: 15px 20px;
+                }
+                @media screen and (max-width: 1027px){
+                    font-size: 14px;
+                }
+                @media screen and (max-width: 798px){
+                     padding: 15px 18px;
+                }
+                @media screen and (max-width: 767px){
+                    float: none;
+                    width: 100%;
+                    border-bottom: 1px solid #CCC;
+                }
+            }
+        }
+    }
+}
+.scroll-to-fixed-fixed{
+    background-color: #FFF;
+    @include shado-1();
+    padding: 10px;
+    @media screen and (max-width: 767px){
+        padding: 0px;
+    }
+}
+.small-menu{
+    float: right;
+    color: #a5238e;
+    font-size: 32px;
+    margin-top: 19px;
+    margin-right: 12px;
+    @media screen and (max-width: 405px){
+        margin-top: 14px;
+    }
+}
+
+/* ===================================== Slider CSS ================================== */
+.slider-detail{
+  
+    .carousel-caption{
+        text-align: left;
+        bottom: 110px;
+        h5{
+            font-size: 44px;
+            margin-left: -40px;
+        }
+        p{
+            margin-left: -40px;
+            font-weight: 600;
+            margin-top: 40px;
+            font-size: 19px;
+        }
+    }
+    .vbh{
+        margin-left: -40px;
+        .btn{
+            padding: 10px;
+            margin-top: 40px;
+           font-weight: 600;
+            font-size: 18px;
+        }
+    }
+    .vdg-cur{
+        color: #FFF;
+    }
+}
+
+/* ===================================== Slider CSS ================================== */
+
+.top-msg{
+    padding: 80px 30px;
+    @media screen and (max-width: 1100px) {
+        padding: 30px 0px;
+    }
+    background-color: #FFF;
+    h2{
+        font-size: 20px;
+        border-bottom: 1px solid #CCC;
+        padding-bottom: 10px;  
+        i{
+            color: #e563ce;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+    }
+    .ohs{
+        ul{
+            li{
+                padding: 10px 5px;
+                span{
+                    float: right;
+                }
+            }
+        }
+    }
+    .vkjd{
+        margin-bottom: 20px;
+    }
+}
+
+/* ===================================== Personal Detail Style  ================================== */
+
+.professional-details{
+   
+    background-image: url('../images/brackground_6.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    
+    .layy{ 
+            background: rgba(165,35,142,0.7); 
+            height: 100%;
+            color: #FFF;
+            padding: 80px 40px;
+            h2{
+                width: 100%;
+            }
+            @media screen and (max-width: 767px) {
+                padding: 80px 40px;
+            }
+            @media screen and (max-width: 750px) {
+                padding: 30px 10px;
+                h2{
+                    font-size: 32px !important;
+                    text-align: center;
+                    width: 100%;
+                }
+            }
+        }
+    .title-another{
+        text-align: center;
+        h4{
+            width: 100%; 
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        h2{
+            font-size: 52px;
+        }
+        h3{
+             width: 100%; 
+            text-align: center;
+            margin-top: 10px;
+        }
+        .btn-ro{
+            text-align: center;
+            width: 100%;
+            padding: 10px;
+            font-family: $mouse-500;
+            margin-top: 20px;
+            .btn{
+                background-color: #FFF;
+                padding: 10px 15px;
+            }
+        }
+    }
+}
+
+/* ===================================== Our Team Style  ================================== */
+
+.our-team{
+    @include big-padding();
+    .team-row{
+        margin-top: 20px;
+        .single-usr{
+            @include shado-3();
+            margin-bottom: 20px;
+            img{
+                width: 100%;
+            }
+            .det-o{
+                padding: 20px;
+                background-color: #a5238e;
+                h4{
+                    color: #FFF;
+                    margin-bottom: 0px;
+                }
+                i{
+                    color: #FFF;
+                }
+            }
+        }
+    }
+}
+
+
+/* ===================================== Testimonial Style  ================================== */
+.testimonial-container{
+    @include big-padding();
+    background-color: #FFF;
+    .float-auto{
+        float: none;
+        margin: auto;
+    }
+}
+.testimonial{
+    padding: 70px 30px 50px;
+    margin: 50px 30px 30px;
+    border: 1px solid #ea816b;
+    position: relative;
+}
+.testimonial .pic{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 5px solid #c7373c;
+    overflow: hidden;
+    margin: 0 auto;
+    position: absolute;
+    top: -50px;
+    left: 0;
+    right: 0;
+}
+.testimonial .pic img{
+    width: 100%;
+    height: auto;
+}
+.testimonial .description{
+    font-size: 15px;
+    color: #5e595b;
+    line-height: 27px;
+    text-align: center;
+    margin: 0;
+    position: relative;
+}
+.testimonial .description:before{
+    content: "\f10d";
+    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    font-size: 25px;
+    color: #d7d7d7;
+    position: absolute;
+    top: 0;
+    left: -2px;
+}
+.testimonial .title{
+    display: inline-table;
+    padding: 10px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #ea816b;
+    font-size: 20px;
+    font-weight: 700;
+    color: #c7373c;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: absolute;
+    bottom: -22px;
+    left: 0;
+    right: 0;
+}
+.testimonial .post{
+    font-size: 15px;
+    color: #671a36;
+}
+.owl-theme .owl-controls{
+    width: 100%;
+    height: 50px;
+    opacity: 1;
+    position: absolute;
+    top: 38%;
+}
+.owl-theme .owl-controls .owl-buttons div{
+    width: 50px;
+    height: 50px;
+    line-height: 40px;
+    border-radius: 0;
+    background: transparent;
+}
+.owl-prev{
+    position: absolute;
+    left: -5%;
+}
+.owl-next{
+    position: absolute;
+    right: -5%;
+}
+.owl-prev:after,
+.owl-next:after{
+    content: "\f104";
+    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    font-size: 30px;
+    color: #c7373c;
+    opacity: 1;
+}
+.owl-next:after{ content: "\f105"; }
+ 
+@media only screen and (max-width: 479px){
+    .testimonial{ padding: 70px 10px 30px; }
+    .testimonial .description:before{ top: -20px }
+    .testimonial .title{ font-size: 12px; }
+    .testimonial .post{ font-size: 11px; }
+}
+
+/* ===================================== Fooer CSS ================================== */
+
+.footer{
+    @include big-padding();
+    padding-bottom: 0px;
+    background-color: #444;
+    color: #FFF;
+    h2{
+        font-size: 26px;
+        margin-top: 10px;
+    }
+    p{
+        text-align: justify;
+        text-indent: 20px;
+    }
+    .link-list{
+        li{
+            padding: 10px;
+            border-bottom: 1px solid #6C6C6C;
+            a{
+                color: #FFF;
+            }
+            i{
+                float: right;
+            }
+        }
+    }
+    .map-img{
+        font-weight: 600;
+        font-size: 17px;
+        padding-left: 20px;
+    }
+    
+}
+.copy{
+        padding: 20px;
+        background-color: #2E2E2E;
+        color: #FFF;
+    a{
+        color: #FFF;
+    }
+    span{
+        float: right;
+        i{
+            margin-right: 20px;
+        }
+        @media screen and (max-width: 777px) {
+            display: none;
+        }
+    }
+}
+
+
+.page-nav{
+    padding: 40px;text-align: center;
+    ul{float: none;margin: auto;}
+    
+     @media screen and (max-width: 409px){
+         padding-top: 210px;
+    }
+    h2{
+        font-size: 36px;
+        width: 100%;
+        color: #444;
+        @media screen and (max-width: 600px){
+            font-size: 26px;
+        }
+    }
+    ul li{
+        float: left;
+        margin-right: 10px;
+        margin-top: 10px;
+        font-size: 16px;
+        i{
+            width: 30px;
+            text-align: center;
+            color: #444;
+           
+        }
+        a{
+            color: #444;
+        }
+    }
+}
+
+
+/* ===================================== About Us Style  ================================== */
+
+.about-us{
+    @include big-padding();
+    background-color: #FFF;
+    @media screen and (max-width: 1199px){
+        .container{
+            max-width: 100%;
+        }
+    }
+    
+       
+    img{
+        width: 100%;
+        padding: 10px;
+        background-color: #FFF;
+        @include shado-1();
+    }
+    h2{
+        font-size: 22px;
+    }
+    p{
+        text-align: justify;
+        text-indent: 20px;
+    }
+    
+}
+
+.kf-2{
+    background-color: #FCFCFC;
+}
+
+.contact-rooo{
+    @include big-padding();
+    background-color: #FFF;
+}
+.pt-00{
+    padding-top: 0px;
+}
+
+
+/* ===================================== Key Features CSS ================================== */
+
+.key-features{
+    @include big-padding();
+    .single-key{
+        background-color: #FFF;
+        @include card-1();
+        margin-bottom: 30px;
+        text-align: center;
+        padding: 30px;
+        i{
+            background-color: #a5238e;
+            padding: 20px;
+            font-size: 42px;
+            color: #FFF;
+            margin-bottom: 30px;
+            border-radius: 50px;
+        }
+        &:hover{
+            @include shado-1();
+        }
+        p{
+            font-family: $mouse-300;
+            font-size: 15px;
+        }
+    }
+}
+
+
+/* ===================================== Gallery Style  ================================== */
+
+.gallery-filter{
+    width: 100%;
+    text-align: center;
+    .btn{
+        background-color: #FFF;
+    }
+}
+.gallery{
+    padding: 30px;
+    background-color: #FFF;
+}
+.gallery-title
+{
+    font-size: 36px;
+    color: #a5238e;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 70px;
+}
+.gallery-title:after {
+    content: "";
+    position: absolute;
+    width: 7.5%;
+    left: 46.5%;
+    height: 45px;
+    border-bottom: 1px solid #a5238e;
+}
+.filter-button
+{
+    font-size: 18px;
+    border: 1px solid #a5238e;
+    border-radius: 5px;
+    text-align: center;
+    color: #a5238e;
+    margin-bottom: 30px;
+
+}
+.filter-button:hover
+{
+    font-size: 18px;
+    border: 1px solid #a5238e;
+    border-radius: 5px;
+    text-align: center;
+    color: #ffffff;
+    background-color: #a5238e;
+
+}
+.btn-default:active .filter-button:active
+{
+    background-color: #a5238e;
+    color: white;
+}
+
+.port-image
+{
+    width: 100%;
+}
+
+.gallery_product
+{
+    margin-bottom: 30px;
+}
+
+/* ===================================== Our Blog CSS ================================== */
+.our-blog{
+	background-color: #FDFDFD;
+	padding: 40px;
+	@media screen and (max-width: 967px) {
+		padding: 30px 0px;
+	}
+	.single-blog{
+		margin-bottom: 20px;
+		background-color: #FFF;
+		@include shado-3();
+		figure{
+			margin-bottom: 5px;
+		}
+		.blog-detail{
+			padding: 15px;
+		}
+		small{
+			color: $color-primary;
+			font-size: 12px;
+		}
+		h4{
+			font-size: 1.2rem;
+			margin-bottom: 10px;
+			
+		}
+		p{
+			text-align: justify;
+			text-indent: 20px;
+		}
+		.link{
+			a{
+				font-size: 12px;
+				color: $color-primary;
+			}
+			i{
+				padding-top: 6px;
+				margin-left: 5px;
+				color: $color-primary;
+			}
+		}
+		
+	}
+}
