@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::get('/about', [HomeController::class, 'about'])->name('home.about');
-Route::get('/service', [HomeController::class, 'service'])->name('home.service');
-Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
+Route::get('/', [WebsiteController::class, 'index'])->name('website.index');
+Route::get('/about', [WebsiteController::class, 'about'])->name('website.about');
+Route::get('/service', [WebsiteController::class, 'service'])->name('website.service');
+Route::get('/contact', [WebsiteController::class, 'contact'])->name('website.contact');
 
 // Route::get('/', function () {
 //     return view('welcome');
