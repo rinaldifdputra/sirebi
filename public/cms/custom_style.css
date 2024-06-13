@@ -1,0 +1,50 @@
+.skin-purple .sidebar-menu>li.header {
+    color: #fff;
+    background: #1a2226;
+}
+
+.select2-container {
+    /* position: relative; */
+    display: inline-block;
+    zoom: 1;
+    display: inline;
+    width: 100%;
+    font-size: 14px;
+    color: #665c70;
+}
+
+.select2-container .select2-choice {
+    font-size: 14px;
+    width: 100%;
+    display: block;
+    height: 32px;
+    padding: 0 0 0 8px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #ced4da;
+    white-space: nowrap;
+    line-height: 26px;
+    color: #665c70;
+    text-decoration: none;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #fff;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #fff), color-stop(0.5, white));
+    background-image: -webkit-linear-gradient(center bottom, #fff 0%, white 50%);
+    background-image: -moz-linear-gradient(center bottom, #fff 0%, white 50%);
+    background-image: -o-linear-gradient(bottom, #fff 0%, #fff 50%);
+    background-image: -ms-linear-gradient(top, #fff 0%, #fff 50%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#fff', GradientType=0);
+    background-image: linear-gradient(top, #fff 0%, #fff 50%);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}

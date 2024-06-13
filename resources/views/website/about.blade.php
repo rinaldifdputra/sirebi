@@ -31,36 +31,7 @@
 
             </div>
         </div>
-        <!-- ######## About US End ####### -->
-        <!-- ################# Hospital Detail Starts Here#######################--->
-        <div class="top-msg pt-00">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 vkjd ohs">
-                        <h2><i class="far fa-clock"></i> Opening Hours</h2>
-                        <ul>
-                            <li>Mon - Fri <span>8.30AM - 7.30PM</span></li>
-                            <li>Saturday - Fri <span>6.30AM - 9.30PM</span></li>
-                            <li>Sunday - Fri <span>11.30AM - 3.30PM</span></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3 col-md-6 vkjd">
-                        <h2><i class="fas fa-calendar-alt"></i> Doctors Timetable</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent interdum posuere eleifend.
-                            Aenean quis ultricies orci. Duis ullamcorper eros id urna viverra</p>
-                    </div>
-                    <div class="col-lg-3 col-md-6 vkjd">
-                        <h2><i class="far fa-envelope"></i> Appointments</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent interdum posuere eleifend.
-                            Aenean quis ultricies orci. Duis ullamcorper eros id urna viverra</p>
-                    </div>
-                    <div class="col-lg-3 col-md-6 vkjd">
-                        <h2><i class="fas fa-phone"></i> Emergency Cases</h2>
-                        <h4>1-898-8767-568</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <!-- ################# Our Team Starts Here#######################--->
         <section class="our-team">
             <div class="container">

@@ -34,6 +34,22 @@
                     <li><a href="{{ route('website.about') }}">Tentang Kami</a></li>
                     <li><a href="{{ route('website.service') }}">Layanan Kami</a></li>
                     <li><a href="{{ route('website.contact') }}">Hubungi Kami</a></li>
+                    <li>
+                        @if (Auth::check())
+                            @if (Auth::user()->role == 'Admin')
+                                <a href="{{ route('admin_dashboard.dashboard') }}" target="_blank">
+                                    Selamat datang, {{ Auth::user()->nama_lengkap }}</a>
+                            @elseif (Auth::user()->role == 'Pasien')
+                                <a href="{{ route('pasien_dashboard.dashboard') }}" target="_blank">
+                                    Selamat datang, {{ Auth::user()->nama_lengkap }}</a>
+                            @elseif (Auth::user()->role == 'Bidan')
+                                <a href="{{ route('bidan_dashboard.dashboard') }}" target="_blank">
+                                    Selamat datang, {{ Auth::user()->nama_lengkap }}</a>
+                            @endif
+                        @else
+                            <a href="{{ route('login') }}" target="_blank">Login</a>
+                        @endif
+                    </li>
                 </ul>
             </div>
         </div>

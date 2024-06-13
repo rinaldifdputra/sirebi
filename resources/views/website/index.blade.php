@@ -88,24 +88,6 @@
         </div>
     </div>
 
-    <!-- ################# AppointmentStarts Here#######################--->
-    <div class="professional-details">
-        <div class="layy">
-            <div class="container">
-                <div class="title-another row">
-                    <h4>We Are Professionals</h4>
-                    <h2>Professional Approach</h2>
-                    <h3>and Quality Services</h3>
-                    <div class="btn-ro">
-                        <button class="btn btn-default">Book an Appointment</button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-
     <!-- ################# Our Team Starts Here#######################--->
     <section class="our-team">
         <div class="container">

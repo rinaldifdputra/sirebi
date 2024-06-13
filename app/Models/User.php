@@ -6,35 +6,41 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     protected $fillable = [
-        'name', 'email', 'password',
+        'nama_lengkap', 'tanggal_lahir', 'jenis_kelamin', 'username', 'password', 'no_hp', 'role', 'pekerjaan', 'created_by', 'updated_by'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function bidan()
+    {
+        return $this->hasMany(T_JadwalPraktek::class, 'bidan_id', 'id');
+    }
+
+    public function pasien()
+    {
+        return $this->hasMany(T_ReservasiBidan::class, 'pasien_id', 'id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
+            }
+        });
+    }
 }

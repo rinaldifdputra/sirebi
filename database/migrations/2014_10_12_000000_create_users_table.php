@@ -14,21 +14,23 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->uuid('id', 36)->primary();
-            $table->string('full_name');
-            $table->date('birth_date')->nullable();
-            $table->enum('gender', ['Laki-Laki', 'Perempuan']);
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('nama_lengkap');
+            $table->date('tanggal_lahir')->nullable();
+            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
+            $table->string('username');
             $table->string('password');
+            $table->string('no_hp');
             $table->enum('role', ['Bidan', 'Pasien', 'Admin']);
+            $table->string('pekerjaan');
             $table->rememberToken();
             $table->uuid('created_by', 36);
             $table->uuid('updated_by', 36);
             $table->timestamps();
         });
 
-        Schema::table('t_schedule', function ($table) {
+        Schema::table('users', function ($table) {
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
         });
