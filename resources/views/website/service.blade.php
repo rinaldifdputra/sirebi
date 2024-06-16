@@ -5,8 +5,7 @@
         <section class="key-features kf-2">
             <div class="container">
                 <div class="inner-title">
-                    <h2>Our Key Features</h2>
-                    <p>Take a look at some of our key features</p>
+                    <h2>Layanan Kami</h2>
                 </div>
 
                 <div class="row">

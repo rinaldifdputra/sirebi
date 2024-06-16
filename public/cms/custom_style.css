@@ -3,6 +3,12 @@
     background: #1a2226;
 }
 
+.skin-blue-light .sidebar-menu>li.header {
+    color: #000;
+    background: #f9fafc;
+    font-weight: 1000;
+}
+
 .select2-container {
     /* position: relative; */
     display: inline-block;
@@ -47,4 +53,15 @@
     filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#fff', GradientType=0);
     background-image: linear-gradient(top, #fff 0%, #fff 50%);
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+div.dataTables_wrapper div.dataTables_filter label {
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: left;
+    display: none;
+}
+
+.form-group {
+    margin-bottom: 5px;
 }

@@ -1,11 +1,27 @@
 <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>S</b>RB</span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>SIREBI</b></span>
-    </a>
+    @if (Auth::user()->role == 'Admin')
+        <a href="{{ route('admin_dashboard.dashboard') }}" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>S</b>RB</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>SIREBI</b></span>
+        </a>
+    @elseif (Auth::user()->role == 'Bidan')
+        <a href="{{ route('bidan_dashboard.dashboard') }}" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>S</b>RB</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>SIREBI</b></span>
+        </a>
+    @elseif (Auth::user()->role == 'Pasien')
+        <a href="{{ route('pasien_dashboard.dashboard') }}" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>S</b>RB</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>SIREBI</b></span>
+        </a>
+    @endif
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
         <!-- Sidebar toggle button-->

@@ -35,4 +35,10 @@ class T_JadwalPraktek extends Model
     {
         return $this->hasMany(T_ReservasiBidan::class, 'jadwal_praktek_id_lama', 'id');
     }
+
+    public function reservasi_tetap()
+    {
+        return $this->hasMany(T_ReservasiBidan::class, 'jadwal_praktek_id', 'id')
+            ->where('status', 'Tetap')->orWhere('status', 'Jadwal Ulang');
+    }
 }

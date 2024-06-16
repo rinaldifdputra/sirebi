@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Request;
+//use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -34,4 +37,22 @@ class Handler extends ExceptionHandler
     {
         //
     }
+
+    // public function render($request, Throwable $exception)
+    // {
+    //     if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+    //         return response()->view('errors.404', [], 404);
+    //     }
+
+    //     if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+    //         return response()->view('errors.403', [], 403);
+    //     }
+
+    //     // Penanganan error 500
+    //     if ($exception instanceof \Exception) {
+    //         return response()->view('errors.500', [], 500);
+    //     }
+
+    //     return parent::render($request, $exception);
+    // }
 }

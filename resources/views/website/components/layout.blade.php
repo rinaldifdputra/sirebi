@@ -6,21 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> Reservasi Bidan | SIREBI</title>
 
-    <link rel="shortcut icon" href="{{ asset('website/assets/images/icon_sirebi.png') }}">
     <link rel="stylesheet" href="{{ asset('website/assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('website/assets/css/fontawsom-all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('website/assets/css/animate.css') }}">
     <link rel="stylesheet" href="{{ asset('website/assets/plugins/testimonial/css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('website/assets/plugins/testimonial/css/owl.theme.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('website/assets/css/style.css') }}" />
-
-    <style>
-        * {
-            list-style: none;
-            margin-left: auto;
-            margin-right: auto;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ asset('website/custom_style.css') }}" />
 </head>
 
 <body>

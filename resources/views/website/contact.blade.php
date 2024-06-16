@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div style="margin:50px" class="serv">
-                            <h2 style="margin-top:10px;">Address</h2>
+                            <h2 style="margin-top:10px;">Alamat Kami</h2>
                             Smart Eye <br>
                             Marthandam<br>
                             K.K District<br>

@@ -36,8 +36,7 @@
         <section class="our-team">
             <div class="container">
                 <div class="inner-title row">
-                    <h2>Our Team</h2>
-                    <p>Take a look at our Team</p>
+                    <h2>Tim Kami</h2>
                 </div>
                 <div class="row team-row">
                     <div class="col-md-3 col-sm-6">

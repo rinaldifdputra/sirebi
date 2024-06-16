@@ -20,10 +20,6 @@
                             aliquet sit amet elementum vel, vehicula eget eros. Vivamus arcu metus, mattis <br>
                             sed sagittis at, sagittis quis neque. Praesent.</p>
 
-                        <div class="row vbh">
-
-                            <div class="btn btn-success  bounceInUp"> Book an Appointment </div>
-                        </div>
                     </div>
                 </div>
 
@@ -36,11 +32,6 @@
                             neque, <br>
                             aliquet sit amet elementum vel, vehicula eget eros. Vivamus arcu metus, mattis <br>
                             sed sagittis at, sagittis quis neque. Praesent.</p>
-
-                        <div class="row vbh">
-
-                            <div class="btn btn-success  bounceInUp"> Book an Appointment </div>
-                        </div>
                     </div>
                 </div>
 
@@ -62,26 +53,35 @@
     <div class="top-msg">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-6 vkjd ohs">
-                    <h2><i class="far fa-clock"></i> Opening Hours</h2>
-                    <ul>
-                        <li>Mon - Fri <span>8.30AM - 7.30PM</span></li>
-                        <li>Saturday - Fri <span>6.30AM - 9.30PM</span></li>
-                        <li>Sunday - Fri <span>11.30AM - 3.30PM</span></li>
-                    </ul>
+                <div class="col-lg-8 col-md-8 vkjd ohs">
+                    <h2><i class="far fa-clock"></i> Jadwal Praktek</h2>
+                    <table class="table table-bordered data-table" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>Jam Praktek</th>
+                                <th>Bidan</th>
+                                <th>Kuota</th>
+                                <th>Sisa Kuota</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data as $item => $value)
+                                <tr>
+                                    <td style="text-align: right;">{{ $item + 1 }}</td>
+                                    <td>{{ $value->tanggal }}</td>
+                                    <td>{{ $value->jam_praktek->jam_mulai }} - {{ $value->jam_praktek->jam_selesai }}</td>
+                                    <td>{{ $value->bidan->nama_lengkap }}</td>
+                                    <td>{{ $value->kuota }}</td>
+                                    <td>{{ $value->sisa_kuota }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-lg-3 col-md-6 vkjd">
-                    <h2><i class="fas fa-calendar-alt"></i> Doctors Timetable</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent interdum posuere eleifend.
-                        Aenean quis ultricies orci. Duis ullamcorper eros id urna viverra</p>
-                </div>
-                <div class="col-lg-3 col-md-6 vkjd">
-                    <h2><i class="far fa-envelope"></i> Appointments</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent interdum posuere eleifend.
-                        Aenean quis ultricies orci. Duis ullamcorper eros id urna viverra</p>
-                </div>
-                <div class="col-lg-3 col-md-6 vkjd">
-                    <h2><i class="fas fa-phone"></i> Emergency Cases</h2>
+                <div class="col-lg-2 col-md-3 vkjd">
+                    <h2><i class="fas fa-phone"></i> Emergency</h2>
                     <h4>1-898-8767-568</h4>
                 </div>
             </div>
@@ -92,8 +92,7 @@
     <section class="our-team">
         <div class="container">
             <div class="inner-title row">
-                <h2>Our Team</h2>
-                <p>Take a look at our Team</p>
+                <h2>Tim Kami</h2>
             </div>
             <div class="row team-row">
                 <div class="col-md-3 col-sm-6">
@@ -141,8 +140,7 @@
     <section class="testimonial-container">
         <div class="container">
             <div class="inner-title row">
-                <h2>Testimonial</h2>
-                <p>Take a look at what people say about us</p>
+                <h2>Testimoni</h2>
             </div>
             <div class="row">
                 <div class="col-md-offset-2 float-auto col-md-10">

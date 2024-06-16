@@ -18,22 +18,23 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        //jika akun yang login sesuai dengan role
-        //maka silahkan akses
-        //jika tidak sesuai akan diarahkan ke home
-
         $roles = array_slice(func_get_args(), 2);
 
-        foreach ($roles as $role) {
-            $user = Auth::user()->role;
-            if ($user == $role) {
-                return $next($request);
+        // Pastikan user sudah login
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            foreach ($roles as $role) {
+                if ($user->role == $role) {
+                    return $next($request);
+                }
             }
+
+            // Jika user tidak memiliki role yang diizinkan, beri response error 403
+            return abort(403, 'Unauthorized action.');
         }
 
-        return abort(403);
-
-        //return redirect('/');
-        //return $next($request);
+        // Jika user belum login, arahkan ke halaman login
+        return redirect('/login');
     }
 }

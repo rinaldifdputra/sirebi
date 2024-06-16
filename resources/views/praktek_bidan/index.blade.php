@@ -6,13 +6,15 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Daftar Jadwal Praktek</h3>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
+                @if (Auth::user()->role == 'Admin' || Auth::user()->role == 'Bidan')
                     <div class="mb-4">
                         <a href="{{ route('jadwal_praktek.create') }}" class="btn btn-success"><i class="fa fa-plus"></i>
                             Tambah
                             Data</a>
                     </div>
+                @endif
+                <!-- /.box-header -->
+                <div class="box-body">
                     <table class="table table-bordered data-table" style="width: 100%">
                         <thead>
                             <tr>
@@ -21,6 +23,7 @@
                                 <th>Jam Praktek</th>
                                 <th>Bidan</th>
                                 <th>Kuota</th>
+                                <th>Sisa Kuota</th>
                                 <th>Aksi</th>
                             </tr>
                             <tr>
@@ -48,8 +51,8 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <td><input class="form-control form-control-sm search" type="text"
-                                        placeholder="Cari Kuota">
+                                <td></td>
+                                <td>
                                 </td>
                                 <td></td>
                             </tr>
@@ -71,7 +74,7 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "{{ route('jadwal_praktek.index') }}",
+                ajax: "{{ route('praktek_bidan.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -101,6 +104,10 @@
                     {
                         data: 'kuota',
                         name: 'kuota'
+                    },
+                    {
+                        data: 'jumlah_reservasi',
+                        name: 'jumlah_reservasi'
                     },
                     {
                         data: 'action',
