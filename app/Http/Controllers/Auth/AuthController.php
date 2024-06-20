@@ -72,7 +72,7 @@ class AuthController extends Controller
         try {
             $request->validate([
                 'nama_lengkap' => 'required|string',
-                'tanggal_lahir' => 'required|date_format:Y-m-d',
+                'tanggal_lahir' => 'required|date_format:d-m-Y',
                 'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
                 'username' => 'required|string|unique:users',
                 'password' => 'required|string',
@@ -85,7 +85,7 @@ class AuthController extends Controller
             $user = new User();
             $user->id = $pasienUuid;
             $user->nama_lengkap = $request->nama_lengkap;
-            $user->tanggal_lahir = Carbon::createFromFormat('Y-m-d', $request->tanggal_lahir);
+            $user->tanggal_lahir = Carbon::createFromFormat('d-m-Y', $request->tanggal_lahir);
             $user->jenis_kelamin = $request->jenis_kelamin;
             $user->username = $request->username;
             $user->password = Hash::make($request->password);
@@ -100,5 +100,11 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal membuat pasien: ' . $e->getMessage()]);
         }
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('auth.profile', compact('user'));
     }
 }

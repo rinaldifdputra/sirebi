@@ -30,7 +30,7 @@
                                         <input type="text"
                                             class="form-control datepicker @error('tanggal_lahir') is-invalid @enderror"
                                             id="tanggal_lahir" name="tanggal_lahir" placeholder="Tanggal Lahir"
-                                            value="{{ old('tanggal_lahir') }}" required>
+                                            value="{{ old('tanggal_lahir') }}" required readonly>
                                         @error('tanggal_lahir')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -106,7 +106,8 @@
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <a href="{{ route('pasien.index') }}" class="btn btn-info"><i class="fa fa-arrow-left"></i>
+                                <a href="{{ route('pasien.index') }}" class="btn btn-danger"><i
+                                        class="fa fa-arrow-left"></i>
                                     Batal</a>
                                 <button type="submit" class="btn btn-success pull-right"><i class="fa fa-save"></i>
                                     Simpan</button>
@@ -123,7 +124,10 @@
         $(function() {
             $('#tanggal_lahir').datepicker({
                 autoclose: true,
-                format: 'yyyy-mm-dd'
+                orientation: 'bottom',
+                clearBtn: true,
+                format: 'dd-mm-yyyy',
+                endDate: new Date() // Membatasi tanggal maksimal menjadi hari ini
             });
 
             @if (session('success'))

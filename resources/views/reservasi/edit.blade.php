@@ -56,11 +56,9 @@
                                                 Tetap</option>
                                             <option value="Batal" {{ $reservasi->status == 'Batal' ? 'selected' : '' }}>
                                                 Batal</option>
-                                            {{-- @if (Auth::user()->role != 'Pasien')
-                                                <option value="Jadwal Ulang"
-                                                    {{ $reservasi->status == 'Jadwal Ulang' ? 'selected' : '' }}>Jadwal
-                                                    Ulang</option>
-                                            @endif --}}
+                                            <option value="Jadwal Ulang"
+                                                {{ $reservasi->status == 'Jadwal Ulang' ? 'selected' : '' }}>Jadwal Ulang
+                                            </option>
                                         </select>
                                         @error('status')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -79,7 +77,7 @@
                                                     {{ $jadwal->tanggal }} -
                                                     {{ $jadwal->jam_praktek->jam_mulai }} -
                                                     {{ $jadwal->jam_praktek->jam_selesai }}
-                                                    (Sisa Kuota: {{ $sisaKuota }})
+                                                    (Sisa Kuota: {{ $jadwal->sisa_kuota }})
                                                     -
                                                     {{ $jadwal->bidan->nama_lengkap }}
                                                 </option>
@@ -103,7 +101,7 @@
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <a href="{{ route('praktek_bidan.index') }}" class="btn btn-info"><i
+                                <a href="{{ route('praktek_bidan.index') }}" class="btn btn-danger"><i
                                         class="fa fa-arrow-left"></i> Batal</a>
                                 <button type="submit" class="btn btn-success pull-right"><i class="fa fa-save"></i>
                                     Simpan</button>

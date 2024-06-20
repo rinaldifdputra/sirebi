@@ -18,7 +18,7 @@
                                         <input type="text"
                                             class="form-control datepicker @error('tanggal') is-invalid @enderror"
                                             id="tanggal" name="tanggal" placeholder="Tanggal" value="{{ old('tanggal') }}"
-                                            required>
+                                            required readonly>
                                         @error('tanggal')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -83,7 +83,7 @@
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <a href="{{ route('praktek_bidan.index') }}" class="btn btn-info"><i
+                                <a href="{{ route('praktek_bidan.index') }}" class="btn btn-danger"><i
                                         class="fa fa-arrow-left"></i>
                                     Batal</a>
                                 <button type="submit" class="btn btn-success pull-right"><i class="fa fa-save"></i>
@@ -134,7 +134,7 @@
             // Datepicker untuk kolom Tanggal
             $('.datepicker').datepicker({
                 autoclose: true,
-                format: 'yyyy-mm-dd',
+                format: 'dd-mm-yyyy',
                 startDate: new Date() // Memperbolehkan memilih tanggal dari hari ini ke depan
             });
 

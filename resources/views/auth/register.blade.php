@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>SIREBI | Register</title>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -20,7 +21,7 @@
        folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('cms/dist/css/skins/_all-skins.min.css') }}">
     <!-- Morris chart -->
-    <link rel="stylesheet" href="{{ asset('cms/bower_components/morris.js/morris.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('cms/bower_components/morris.js/morris.css') }}"> --}}
     <!-- jvectormap -->
     <link rel="stylesheet" href="{{ asset('cms/bower_components/jvectormap/jquery-jvectormap.css') }}">
     <!-- Date Picker -->
@@ -55,6 +56,8 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
+    <link rel="stylesheet" href="{{ asset('cms/custom_style.css') }}">
+
     <style>
         .content-wrapper {
             min-height: calc(100vh - 101px);
@@ -72,12 +75,13 @@
                 <div class="col-xs-10">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Registrasi Pasien</h3>
+                            <h3 class="box-title"><i class="fa fa-user-plus"></i> Registrasi Pasien</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
                             <div class="container mt-5">
-                                <form class="form-horizontal" action="{{ route('register') }}" method="POST">
+                                <form class="form-horizontal" id="registrasi" action="{{ route('register') }}"
+                                    method="POST">
                                     @csrf
                                     <div class="box-body">
                                         <div class="form-group">
@@ -100,7 +104,7 @@
                                                 <input type="text"
                                                     class="form-control datepicker @error('tanggal_lahir') is-invalid @enderror"
                                                     id="tanggal_lahir" name="tanggal_lahir" placeholder="Tanggal Lahir"
-                                                    value="{{ old('tanggal_lahir') }}" required>
+                                                    value="{{ old('tanggal_lahir') }}" required readonly>
                                                 @error('tanggal_lahir')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -186,7 +190,7 @@
                                     </div>
                                     <!-- /.box-body -->
                                     <div class="box-footer">
-                                        <a href="{{ route('login') }}" class="btn btn-info"><i
+                                        <a href="{{ route('login') }}" class="btn btn-danger"><i
                                                 class="fa fa-arrow-left"></i>
                                             Batal</a>
                                         <button type="submit" class="btn btn-success pull-right"><i
@@ -219,8 +223,8 @@
     <!-- Bootstrap 3.3.7 -->
     <script src="{{ asset('cms/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <!-- Morris.js charts -->
-    <script src="{{ asset('cms/bower_components/raphael/raphael.min.js') }}"></script>
-    <script src="{{ asset('cms/bower_components/morris.js/morris.min.js') }}"></script>
+    {{-- <script src="{{ asset('cms/bower_components/raphael/raphael.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('cms/bower_components/morris.js/morris.min.js') }}"></script> --}}
     <!-- Sparkline -->
     <script src="{{ asset('cms/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js') }}"></script>
     <!-- jvectormap -->
@@ -246,10 +250,35 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('cms/dist/js/demo.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            // Add Reservation
+            $('#registrasi').on('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: 'Anda akan melakukan registrasi',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, registrasi!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        e.target.submit(); // Use e.target.submit() to submit the form
+                    } else if (result.isDenied) {
+                        Swal.fire('Data gagal ditambah', '', 'info');
+                    }
+                });
+            });
+        });
+
         $(function() {
             $('#tanggal_lahir').datepicker({
                 autoclose: true,
-                format: 'yyyy-mm-dd'
+                orientation: 'bottom',
+                clearBtn: true,
+                format: 'dd-mm-yyyy',
+                endDate: new Date() // Membatasi tanggal maksimal menjadi hari ini
             });
 
             @if (session('success'))

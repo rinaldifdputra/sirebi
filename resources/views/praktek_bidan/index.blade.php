@@ -1,210 +1,189 @@
 @extends('components.layout')
 @section('content')
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Daftar Jadwal Praktek</h3>
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Daftar Jadwal Praktek</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            @if (Auth::user()->role != 'Pasien')
+                <div class="mb-4">
+                    <a href="{{ route('jadwal_praktek.create') }}" class="btn btn-success"><i class="fa fa-user-plus"></i>
+                        Tambah
+                        Data</a>
                 </div>
-                @if (Auth::user()->role == 'Admin' || Auth::user()->role == 'Bidan')
-                    <div class="mb-4">
-                        <a href="{{ route('jadwal_praktek.create') }}" class="btn btn-success"><i class="fa fa-plus"></i>
-                            Tambah
-                            Data</a>
-                    </div>
-                @endif
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <table class="table table-bordered data-table" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Tanggal</th>
-                                <th>Jam Praktek</th>
-                                <th>Bidan</th>
-                                <th>Kuota</th>
-                                <th>Sisa Kuota</th>
-                                <th>Aksi</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><input class="form-control form-control-sm search" type="text"
-                                        placeholder="Cari Tanggal">
-                                </td>
+            @endif
+            <table class="table table-bordered data-table" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Jam Praktek</th>
+                        <th>Nama Bidan</th>
+                        <th>Kuota</th>
+                        <th>Jumlah Reservasi</th>
+                        @if (Auth::user()->role == 'Pasien')
+                            <th>Status</th>
+                        @endif
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input class="form-control form-control-sm search datepicker" type="text"
+                                placeholder="Cari Tanggal" readonly>
+                        </td>
+                        <td>
+                            <select class="select2-container" id="searchJamPraktek">
+                                <option value=""></option>
+                                @foreach ($jam_praktek as $jam)
+                                    <option value="{{ $jam->jam_praktek }}">
+                                        {{ $jam->jam_praktek }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select class="select2-container" id="searchBidan">
+                                <option value=""></option>
+                                @foreach ($bidan as $bdn)
+                                    <option value="{{ $bdn->nama_lengkap }}">
+                                        {{ $bdn->nama_lengkap }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td></td>
+                        <td>
+                        </td>
+                        @if (Auth::user()->role == 'Pasien')
+                            <td></td>
+                        @endif
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $index => $jadwal)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ \Carbon\Carbon::parse($jadwal->tanggal)->format('d-m-Y') }}</td>
+                            <td>{{ $jadwal->jam_praktek->jam_praktek }}</td>
+                            <td>{{ $jadwal->bidan->nama_lengkap }}</td>
+                            <td>{{ $jadwal->kuota }}</td>
+                            <td>{{ $jadwal->kuota - $jadwal->reservasi_tetap_count }}</td>
+                            @if (Auth::user()->role == 'Pasien')
                                 <td>
-                                    <select class="select2-container" id="searchJamPraktek">
-                                        <option value=""></option>
-                                        @foreach ($jam_praktek as $jam)
-                                            <option value="{{ $jam->jam_praktek }}">
-                                                {{ $jam->jam_praktek }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    @php
+                                        $reservasi = $jadwal->reservasi->where('pasien_id', Auth::user()->id)->first();
+                                    @endphp
+                                    {{ $reservasi ? $reservasi->status : 'Belum Reservasi' }}
                                 </td>
-                                <td>
-                                    <select class="select2-container" id="searchBidan">
-                                        <option value=""></option>
-                                        @foreach ($bidan as $bdn)
-                                            <option value="{{ $bdn->nama_lengkap }}">
-                                                {{ $bdn->nama_lengkap }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td></td>
-                                <td>
-                                </td>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                            @endif
+                            <td>
+                                @if (Auth::user()->role == 'Pasien')
+                                    {{-- Cek apakah pengguna sedang login dan memiliki reservasi pada jadwal praktek ini --}}
+                                    @if ($jadwal->reservasi_tetap_count > 0 && $jadwal->reservasi_tetap->where('pasien_id', Auth::user()->id)->isNotEmpty())
+                                        {{-- Dapatkan reservasi pertama --}}
+                                        @php
+                                            $reservasi = $jadwal->reservasi_tetap
+                                                ->where('pasien_id', Auth::user()->id)
+                                                ->first();
+                                        @endphp
+
+                                        {{-- Pastikan reservasi tidak null dan status bukan 'Batal' --}}
+                                        @if ($reservasi && $reservasi->status != 'Batal')
+                                            {{-- Pengguna adalah pasien dan sudah memiliki reservasi yang tidak dibatalkan, tampilkan tombol edit --}}
+                                            <a href="{{ route('reservasi.edit', $jadwal->id) }}"
+                                                class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a>
+                                        @else
+                                            {{-- Pengguna adalah pasien, tetapi belum memiliki reservasi atau reservasi yang dibatalkan, tampilkan tombol tambah --}}
+                                            <a href="{{ route('reservasi.create', $jadwal->id) }}"
+                                                class="btn btn-success btn-sm"><i class="fa fa-plus"></i></a>
+                                        @endif
+                                    @else
+                                        {{-- Pengguna adalah pasien dan belum memiliki reservasi pada jadwal praktek ini, tampilkan tombol tambah --}}
+                                        <a href="{{ route('reservasi.create', $jadwal->id) }}"
+                                            class="btn btn-success btn-sm"><i class="fa fa-plus"></i></a>
+                                    @endif
+                                @else
+                                    <a href="{{ route('jadwal_praktek.show', $jadwal->id) }}"
+                                        class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>
+                                    <a href="{{ route('jadwal_praktek.edit', $jadwal->id) }}"
+                                        class="edit btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a>
+                                    <form action="{{ route('jadwal_praktek.destroy', $jadwal->id) }}" method="post"
+                                        id="deleteForm">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-sm" id="btnHapus"><i
+                                                class="fa fa-trash-o"></i></button>
+                                    </form>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        $(function() {
-            // Inisialisasi DataTables
-            let dtOverrideGlobals = {
+        $(document).ready(function() {
+            // Initialize DataTables
+            var table = $('.data-table').DataTable({
                 processing: true,
-                serverSide: true,
-                retrieve: true,
-                aaSorting: [],
-                ajax: "{{ route('praktek_bidan.index') }}",
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'tanggal',
-                        name: 'tanggal',
-                        render: function(data, type, row) {
-                            // Format tanggal menjadi dd-mm-yyyy
-                            let date = new Date(data);
-                            let day = ("0" + date.getDate()).slice(-2);
-                            let month = ("0" + (date.getMonth() + 1)).slice(-2);
-                            let year = date.getFullYear();
-                            return `${day}-${month}-${year}`;
-                        }
-                    },
-                    {
-                        data: 'jam_praktek',
-                        name: 'jam_praktek'
-                    },
-                    {
-                        data: 'bidan.nama_lengkap',
-                        name: 'bidan.nama_lengkap'
-                    },
-                    {
-                        data: 'kuota',
-                        name: 'kuota'
-                    },
-                    {
-                        data: 'jumlah_reservasi',
-                        name: 'jumlah_reservasi'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false,
-                        width: '10%'
-                    },
-                ],
+                serverSide: false,
                 orderCellsTop: true,
-                order: [
-                    [1, 'asc']
-                ],
-                pageLength: 10,
-                lengthMenu: [
-                    [10, 25, 50, 100],
-                    [10, 25, 50, 100]
-                ],
-            };
-
-            let table = $('.data-table').DataTable(dtOverrideGlobals);
-
-            // Aksi saat tombol delete diklik
-            $('.data-table').on('click', '#btnHapus[data-remote]', function(e) {
-                e.preventDefault();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                fixedHeader: true,
+                order: [],
+                language: {
+                    "sSearch": "Pencarian :",
+                    "lengthMenu": "Tampilkan _MENU_ data",
+                    "zeroRecords": "Tidak ditemukan data yang sesuai",
+                    "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "infoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
+                    "infoFiltered": "(disaring dari _MAX_ total data)",
+                    "paginate": {
+                        "next": "Berikutnya",
+                        "previous": "Sebelumnya"
                     }
-                });
-                var url = $(this).data('remote');
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Konfirmasi',
-                    text: 'Apakah ingin menghapus data ini?',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, hapus',
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    cancelButtonText: 'Tidak',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            dataType: 'json',
-                            data: {
-                                _method: 'DELETE',
-                                "_token": "{{ csrf_token() }}"
-                            },
-                            success: function(data) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: 'Data berhasil dihapus.',
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                }).then(() => {
-                                    $('.data-table').DataTable().draw(true);
-                                });
-                            },
-                            error: function(err) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Gagal!',
-                                    text: 'Terjadi kesalahan saat menghapus data.',
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                });
-                            }
-                        }).always(function() {
-                            location.reload();
-                        });
-                    }
-                });
+                }
             });
 
-            $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
-            });
-
-            // Fungsi pencarian dan filtering
-            $('.data-table').on('keyup change', '.search', function() {
-                let index = $(this).closest('td').index();
+            // Apply the search
+            $('.search').on('keyup change', function() {
+                var index = $(this).closest('td').index();
                 table.column(index).search(this.value).draw();
             });
 
-            $('.data-table thead').on('change', '.select2-container', function() {
-                let strict = $(this).attr('strict') || false
-                let value = strict && this.value ? "^" + this.value + "$" : this.value
-                let index = $(this).parent().index()
+            // Apply the select2 dropdown search
+            $('#searchBidan').select2({
+                placeholder: 'Pilih Nama Bidan',
+                allowClear: true
+            });
 
-                table
-                    .column(index)
-                    .search(value, strict)
-                    .draw()
+            // Apply the select2 dropdown search
+            $('#searchJamPraktek').select2({
+                placeholder: 'Pilih Jam Praktek',
+                allowClear: true
+            });
+
+            // Datepicker
+            $('.datepicker').datepicker({
+                format: 'dd-mm-yyyy',
+                autoclose: true,
+                orientation: 'bottom',
+                clearBtn: true
+            });
+
+            // Apply the select2 dropdown search
+            $('#searchBidan, #searchJamPraktek').on('change', function() {
+                var val = $(this).val();
+                var index = $(this).closest('td').index();
+                table.column(index).search(val ? '^' + $(this).val() + '$' : '', true, false).draw();
+            });
+
+            $('#searchJamPraktek').on('change', function() {
+                var val = $(this).val();
+                table.column(2).search(val ? '^' + val + '$' : '', true, false).draw();
             });
 
             // Handling success and error messages
@@ -226,17 +205,22 @@
                 });
             @endif
         });
-
-        $(document).ready(function() {
-            // Inisialisasi Select2 untuk kolom Jenis Kelamin
-            $('#searchJamPraktek').select2({
-                placeholder: 'Pilih Jam Praktek',
-                allowClear: true
-            });
-
-            $('#searchBidan').select2({
-                placeholder: 'Pilih Bidan',
-                allowClear: true
+        $(document).on('click', '#btnHapus', function() {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Anda akan menghapus data ini',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).closest('form').submit();
+                } else if (result.isDenied) {
+                    Swal.fire('Data gagal dihapus', '', 'info')
+                }
             });
         });
     </script>

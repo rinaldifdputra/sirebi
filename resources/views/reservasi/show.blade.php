@@ -4,19 +4,19 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Tambah Reservasi Bidan</h3>
+                    <h3 class="box-title">Detail Reservasi Bidan</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="container mt-5">
-                        <form id="reservasiForm" class="form-horizontal"
-                            action="{{ route('reservasi.store', ['jadwalPraktekId' => $jadwalPraktekId]) }}" method="POST">
-                            @csrf
+                        <form class="form-horizontal">
                             <div class="box-body">
+                                <!-- Tambahkan form-group untuk menampilkan informasi jadwal praktek -->
                                 <div class="form-group">
                                     <label for="tanggal" class="col-sm-2 control-label">Tanggal:</label>
                                     <div class="col-sm-10">
-                                        <p class="form-control-static">{{ $jadwalPraktek->tanggal }}</p>
+                                        <p class="form-control-static">
+                                            {{ \Carbon\Carbon::parse($jadwalPraktek->tanggal)->format('d-m-Y') }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -39,19 +39,29 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kuota" class="col-sm-2 control-label">Sisa Kuota:</label>
+                                    <label for="sisa_kuota" class="col-sm-2 control-label">Sisa Kuota:</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $sisaKuota }}</p>
+                                    </div>
+                                </div>
+                                <!-- Form-group untuk dropdown Status -->
+                                <div class="form-group">
+                                    <label for="status" class="col-sm-2 control-label">Status:</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static">{{ $reservasi->status }}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="keterangan_group" style="display: none;">
+                                    <label for="keterangan" class="col-sm-2 control-label">Keterangan:</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static">{{ $reservasi->keterangan }}</p>
                                     </div>
                                 </div>
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <a href="{{ route('praktek_bidan.index') }}" class="btn btn-danger"><i
-                                        class="fa fa-arrow-left"></i> Batal</a>
-                                <button type="button" id="btnReservasi" class="btn btn-success pull-right"><i
-                                        class="fa fa-save"></i>
-                                    Reservasi</button>
+                                <a href="{{ url()->previous() }}" class="btn btn-danger"><i class="fa fa-arrow-left"></i>
+                                    Kembali</a>
                             </div>
                             <!-- /.box-footer -->
                         </form>
@@ -60,52 +70,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(function() {
-            @if (session('success'))
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: '{{ session('success') }}',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            @endif
-
-            @if ($errors->any())
-                Swal.fire({
-                    title: 'Gagal!',
-                    text: '{{ $errors->first() }}',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            @endif
-        });
-
-        $(document).ready(function() {
-            $('#jadwal_praktek_id').select2({
-                placeholder: 'Pilih Jadwal Praktek',
-                allowClear: true
-            });
-
-            // Tambahkan event listener untuk tombol Reservasi
-            $('#btnReservasi').on('click', function(e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Konfirmasi',
-                    text: "Apakah Anda yakin ingin melakukan reservasi?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, reservasi!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#reservasiForm').submit(); // Submit form jika dikonfirmasi
-                    }
-                });
-            });
-        });
-    </script>
 @endsection

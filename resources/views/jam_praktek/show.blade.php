@@ -34,7 +34,7 @@
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <a href="{{ route('jam_praktek.index') }}" class="btn btn-info"><i
+                                <a href="{{ route('jam_praktek.index') }}" class="btn btn-danger"><i
                                         class="fa fa-arrow-left"></i>
                                     Kembali</a>
                             </div>

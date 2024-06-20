@@ -76,6 +76,8 @@ Route::middleware(['auth', 'role:Admin,Bidan,Pasien'])->group(function () {
     Route::post('/reservasi/store/{jadwalPraktekId}', [ReservasiBidanController::class, 'store'])->name('reservasi.store');
     Route::get('reservasi/{id}/edit', [ReservasiBidanController::class, 'edit'])->name('reservasi.edit');
     Route::put('reservasi/{id}', [ReservasiBidanController::class, 'update'])->name('reservasi.update');
+    Route::get('reservasi/{id}', [ReservasiBidanController::class, 'show'])->name('reservasi.show');
 
+    Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

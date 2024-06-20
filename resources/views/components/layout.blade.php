@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Reservasi Bidan | SIREBI</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -20,7 +22,7 @@
        folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('cms/dist/css/skins/_all-skins.min.css') }}">
     <!-- Morris chart -->
-    <link rel="stylesheet" href="{{ asset('cms/bower_components/morris.js/morris.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('cms/bower_components/morris.js/morris.css') }}"> --}}
     <!-- jvectormap -->
     <link rel="stylesheet" href="{{ asset('cms/bower_components/jvectormap/jquery-jvectormap.css') }}">
     <!-- Date Picker -->
@@ -58,6 +60,15 @@
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
     <link rel="stylesheet" href="{{ asset('cms/custom_style.css') }}">
+
+    {{-- <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'ngrok-skip-browser-warning': 'true' // Tambahkan header ini
+            }
+        });
+    </script> --}}
 </head>
 
 <body class="sidebar-mini skin-blue-light fixed">
@@ -94,8 +105,8 @@
     <!-- Bootstrap 3.3.7 -->
     <script src="{{ asset('cms/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <!-- Morris.js charts -->
-    <script src="{{ asset('cms/bower_components/raphael/raphael.min.js') }}"></script>
-    <script src="{{ asset('cms/bower_components/morris.js/morris.min.js') }}"></script>
+    {{-- <script src="{{ asset('cms/bower_components/raphael/raphael.min.js') }}"></script>
+    <script src="{{ asset('cms/bower_components/morris.js/morris.min.js') }}"></script> --}}
     <!-- Sparkline -->
     <script src="{{ asset('cms/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js') }}"></script>
     <!-- jvectormap -->
@@ -117,7 +128,7 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('cms/dist/js/adminlte.min.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('cms/dist/js/pages/dashboard.js') }}"></script>
+    {{-- <script src="{{ asset('cms/dist/js/pages/dashboard.js') }}"></script> --}}
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('cms/dist/js/demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/select2/3.3.2/select2.js"></script>

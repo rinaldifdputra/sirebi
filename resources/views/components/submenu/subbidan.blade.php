@@ -6,7 +6,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('praktek_bidan.index') }}">
+        <a href="{{ route('praktek_bidan.index_history') }}">
             <i class="fa fa-calendar-check-o"></i> <span>History Jadwal Praktek Bidan</span>
         </a>
     </li>

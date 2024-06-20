@@ -1,214 +1,115 @@
 @extends('components.layout')
+
 @section('content')
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Daftar Bidan</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="mb-4">
-                        <a href="{{ route('bidan.create') }}" class="btn btn-success"><i class="fa fa-user-plus"></i> Tambah
-                            Data</a>
-                    </div>
-                    <table class="table table-bordered data-table" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Lengkap</th>
-                                <th>Username</th>
-                                <th>Tanggal Lahir</th>
-                                <th>Jenis Kelamin</th>
-                                <th>No HP</th>
-                                <th>Pekerjaan</th>
-                                <th>Aksi</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td><input class="form-control form-control-sm search" type="text"
-                                        placeholder="Cari Nama Lengkap">
-                                </td>
-                                <td><input class="form-control form-control-sm search" type="text"
-                                        placeholder="Cari Username">
-                                </td>
-                                <td><input class="form-control form-control-sm search datepicker" type="text"
-                                        placeholder="Cari Tanggal Lahir"></td>
-                                <td>
-                                    <select class="select2-container" id="searchJenisKelamin">
-                                        <option value=""></option>
-                                        <option value="Laki-Laki">Laki-Laki</option>
-                                        <option value="Perempuan">Perempuan</option>
-                                    </select>
-                                </td>
-                                <td><input class="form-control form-control-sm search" type="text"
-                                        placeholder="Cari No HP">
-                                </td>
-                                <td><input class="form-control form-control-sm search" type="text"
-                                        placeholder="Cari Pekerjaan">
-                                </td>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Daftar Bidan</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="mb-4">
+                <a href="{{ route('bidan.create') }}" class="btn btn-success"><i class="fa fa-user-plus"></i> Tambah Data</a>
             </div>
+            <table class="table table-bordered data-table" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Lengkap</th>
+                        <th>Tanggal Lahir</th>
+                        <th>Jenis Kelamin</th>
+                        <th>No HP</th>
+                        <th>Aksi</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input class="form-control form-control-sm search" type="text"
+                                placeholder="Cari Nama Lengkap"></td>
+                        <td><input class="form-control form-control-sm search datepicker" type="text"
+                                placeholder="Cari Tanggal Lahir" readonly></td>
+                        <td>
+                            <select id="searchJenisKelamin" style="width: 100%;">
+                                <option value=""></option>
+                                <option value="Laki-Laki">Laki-Laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                        </td>
+                        <td><input class="form-control form-control-sm search" type="text" placeholder="Cari No HP"></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($users as $key => $user)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $user->nama_lengkap }}</td>
+                            <td>{{ \Carbon\Carbon::parse($user->tanggal_lahir)->format('d-m-Y') }}</td>
+                            <td>{{ $user->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                            <td>{{ $user->no_hp }}</td>
+                            <td>
+                                <a href="{{ route('bidan.show', $user->id) }}" class="btn btn-info btn-sm"><i
+                                        class="fa fa-search-plus"></i></a>
+                                <a href="{{ route('bidan.edit', $user->id) }}" class="btn btn-warning btn-sm"><i
+                                        class="fa fa-pencil-square-o"></i></a>
+                                <form action="{{ route('bidan.destroy', $user->id) }}" method="post" id="deleteForm">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="btn btn-danger btn-sm" id="btnHapus"><i
+                                            class="fa fa-trash-o"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        $(function() {
-            // Inisialisasi DataTables
-            let dtOverrideGlobals = {
+        $(document).ready(function() {
+            // Initialize DataTables
+            var table = $('.data-table').DataTable({
                 processing: true,
-                serverSide: true,
-                retrieve: true,
-                aaSorting: [],
-                ajax: "{{ route('bidan.index') }}",
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'nama_lengkap',
-                        name: 'nama_lengkap'
-                    },
-                    {
-                        data: 'username',
-                        name: 'username'
-                    },
-                    {
-                        data: 'tanggal_lahir',
-                        name: 'tanggal_lahir',
-                        render: function(data, type, row) {
-                            // Format tanggal menjadi dd-mm-yyyy
-                            let date = new Date(data);
-                            let day = ("0" + date.getDate()).slice(-2);
-                            let month = ("0" + (date.getMonth() + 1)).slice(-2);
-                            let year = date.getFullYear();
-                            return `${day}-${month}-${year}`;
-                        }
-                    },
-                    {
-                        data: 'jenis_kelamin',
-                        name: 'jenis_kelamin'
-                    },
-                    {
-                        data: 'no_hp',
-                        name: 'no_hp'
-                    },
-                    {
-                        data: 'pekerjaan',
-                        name: 'pekerjaan'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false,
-                        width: '10%'
-                    },
-                ],
+                serverSide: false,
                 orderCellsTop: true,
-                order: [
-                    [1, 'asc']
-                ],
-                pageLength: 10,
-                lengthMenu: [
-                    [10, 25, 50, 100],
-                    [10, 25, 50, 100]
-                ],
-            };
-
-            let table = $('.data-table').DataTable(dtOverrideGlobals);
-
-            // // Datepicker untuk kolom Tanggal Lahir
-            // $('.datepicker').datepicker({
-            //     autoclose: true,
-            //     format: 'yyyy-mm-dd'
-            // });
-
-            // Aksi saat tombol delete diklik
-            $('.data-table').on('click', '#btnHapus[data-remote]', function(e) {
-                e.preventDefault();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                fixedHeader: true,
+                order: [],
+                language: {
+                    "sSearch": "Pencarian :",
+                    "lengthMenu": "Tampilkan _MENU_ data",
+                    "zeroRecords": "Tidak ditemukan data yang sesuai",
+                    "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "infoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
+                    "infoFiltered": "(disaring dari _MAX_ total data)",
+                    "paginate": {
+                        "next": "Berikutnya",
+                        "previous": "Sebelumnya"
                     }
-                });
-                var url = $(this).data('remote');
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Konfirmasi',
-                    text: 'Apakah ingin menghapus data ini?',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, hapus',
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    cancelButtonText: 'Tidak',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            dataType: 'json',
-                            data: {
-                                _method: 'DELETE',
-                                "_token": "{{ csrf_token() }}"
-                            },
-                            success: function(data) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: 'Data berhasil dihapus.',
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                }).then(() => {
-                                    $('.data-table').DataTable().draw(true);
-                                });
-                            },
-                            error: function(err) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Gagal!',
-                                    text: 'Terjadi kesalahan saat menghapus data.',
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                });
-                            }
-                        }).always(function() {
-                            location.reload();
-                        });
-                    }
-                });
+                }
             });
 
-            $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
-            });
-
-            // Fungsi pencarian dan filtering
-            $('.data-table').on('keyup change', '.search', function() {
-                let index = $(this).closest('td').index();
+            // Apply the search
+            $('.search').on('keyup change', function() {
+                var index = $(this).closest('td').index();
                 table.column(index).search(this.value).draw();
             });
 
-            $('.data-table thead').on('change', '.select2-container', function() {
-                let strict = $(this).attr('strict') || false
-                let value = strict && this.value ? "^" + this.value + "$" : this.value
-                let index = $(this).parent().index()
+            // Apply the select2 dropdown search
+            $('#searchJenisKelamin').select2({
+                placeholder: 'Pilih Jenis Kelamin',
+                allowClear: true
+            });
 
-                table
-                    .column(index)
-                    .search(value, strict)
-                    .draw()
+            $('#searchJenisKelamin').on('change', function() {
+                var value = $(this).val();
+                table.columns(4).search(value).draw();
+            });
+
+            // Datepicker
+            $('.datepicker').datepicker({
+                format: 'dd-mm-yyyy',
+                autoclose: true,
+                orientation: 'bottom'
             });
 
             // Handling success and error messages
@@ -230,11 +131,22 @@
                 });
             @endif
         });
-        $(document).ready(function() {
-            // Inisialisasi Select2 untuk kolom Jenis Kelamin
-            $('#searchJenisKelamin').select2({
-                placeholder: 'Pilih Jenis Kelamin',
-                allowClear: true
+        $(document).on('click', '#btnHapus', function() {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Anda akan menghapus data ini',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).closest('form').submit();
+                } else if (result.isDenied) {
+                    Swal.fire('Data gagal dihapus', '', 'info')
+                }
             });
         });
     </script>

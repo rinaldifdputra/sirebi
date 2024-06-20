@@ -13,21 +13,11 @@ class JamPraktekController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $data = T_JamPraktek::orderByRaw('concat(jam_mulai, jam_selesai)')->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $btn = '<a href="' . route('jam_praktek.show', $row->id) . '" class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>  ';
-                    $btn .= '<a href="' . route('jam_praktek.edit', $row->id) . '" class="edit btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a>  ';
-                    $btn .= '<button type="button" id="btnHapus" data-remote="' . route('jam_praktek.destroy', $row->id) . '" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>';
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
+        // Ambil data dari database, diurutkan berdasarkan concat(jam_mulai, jam_selesai)
+        $data = T_JamPraktek::orderByRaw('concat(jam_mulai, jam_selesai)')->get();
 
-        return view('jam_praktek.index');
+        // Teruskan data ke view
+        return view('jam_praktek.index', compact('data'));
     }
 
     public function create()

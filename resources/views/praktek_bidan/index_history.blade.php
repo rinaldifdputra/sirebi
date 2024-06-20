@@ -17,13 +17,15 @@
                                 <th>Bidan</th>
                                 <th>Kuota</th>
                                 <th>Sisa Kuota</th>
+                                @if (Auth::user()->role == 'Pasien')
+                                    <th>Status</th>
+                                @endif
                                 <th>Aksi</th>
                             </tr>
                             <tr>
                                 <td></td>
-                                <td><input class="form-control form-control-sm search" type="text"
-                                        placeholder="Cari Tanggal">
-                                </td>
+                                <td><input class="form-control form-control-sm search datepicker" type="text"
+                                        placeholder="Cari Tanggal" readonly></td>
                                 <td>
                                     <select class="select2-container" id="searchJamPraktek">
                                         <option value=""></option>
@@ -46,10 +48,42 @@
                                 </td>
                                 <td></td>
                                 <td></td>
+                                @if (Auth::user()->role == 'Pasien')
+                                    <td></td>
+                                @endif
                                 <td></td>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($data as $key => $jadwal)
+                                <tr>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($jadwal->tanggal)->format('d-m-Y') }}</td>
+                                    <td>{{ $jadwal->jam_praktek->jam_praktek }}</td>
+                                    <td>{{ $jadwal->bidan->nama_lengkap }}</td>
+                                    <td>{{ $jadwal->kuota }}</td>
+                                    <td>{{ $jadwal->kuota - $jadwal->reservasi_tetap_count }}</td>
+                                    @if (Auth::user()->role == 'Pasien')
+                                        <td>
+                                            @php
+                                                $reservasi = $jadwal->reservasi
+                                                    ->where('pasien_id', Auth::user()->id)
+                                                    ->first();
+                                            @endphp
+                                            {{ $reservasi ? $reservasi->status : 'Belum Reservasi' }}
+                                        </td>
+                                    @endif
+                                    <td>
+                                        @if (Auth::user()->role != 'Pasien')
+                                            <a href="{{ route('jadwal_praktek.show', $jadwal->id) }}"
+                                                class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>
+                                        @else
+                                            <a href="{{ route('reservasi.show', $jadwal->id) }}"
+                                                class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -60,143 +94,63 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(function() {
-            // Inisialisasi DataTables
-            let dtOverrideGlobals = {
+            // Initialize DataTables
+            var table = $('.data-table').DataTable({
                 processing: true,
-                serverSide: true,
-                retrieve: true,
-                aaSorting: [],
-                ajax: "{{ route('praktek_bidan.index_history') }}",
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'tanggal',
-                        name: 'tanggal',
-                        render: function(data, type, row) {
-                            // Format tanggal menjadi dd-mm-yyyy
-                            let date = new Date(data);
-                            let day = ("0" + date.getDate()).slice(-2);
-                            let month = ("0" + (date.getMonth() + 1)).slice(-2);
-                            let year = date.getFullYear();
-                            return `${day}-${month}-${year}`;
-                        }
-                    },
-                    {
-                        data: 'jam_praktek',
-                        name: 'jam_praktek'
-                    },
-                    {
-                        data: 'bidan.nama_lengkap',
-                        name: 'bidan.nama_lengkap'
-                    },
-                    {
-                        data: 'kuota',
-                        name: 'kuota'
-                    },
-                    {
-                        data: 'jumlah_reservasi',
-                        name: 'jumlah_reservasi'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false,
-                        width: '10%'
-                    },
-                ],
+                serverSide: false,
                 orderCellsTop: true,
-                order: [
-                    [1, 'asc']
-                ],
-                pageLength: 10,
-                lengthMenu: [
-                    [10, 25, 50, 100],
-                    [10, 25, 50, 100]
-                ],
-            };
-
-            let table = $('.data-table').DataTable(dtOverrideGlobals);
-
-            // // Aksi saat tombol delete diklik
-            // $('.data-table').on('click', '#btnHapus[data-remote]', function(e) {
-            //     e.preventDefault();
-            //     $.ajaxSetup({
-            //         headers: {
-            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //         }
-            //     });
-            //     var url = $(this).data('remote');
-            //     Swal.fire({
-            //         icon: 'warning',
-            //         title: 'Konfirmasi',
-            //         text: 'Apakah ingin menghapus data ini?',
-            //         showCancelButton: true,
-            //         confirmButtonText: 'Ya, hapus',
-            //         confirmButtonColor: '#d33',
-            //         cancelButtonColor: '#3085d6',
-            //         cancelButtonText: 'Tidak',
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             $.ajax({
-            //                 url: url,
-            //                 type: 'POST',
-            //                 dataType: 'json',
-            //                 data: {
-            //                     _method: 'DELETE',
-            //                     "_token": "{{ csrf_token() }}"
-            //                 },
-            //                 success: function(data) {
-            //                     Swal.fire({
-            //                         icon: 'success',
-            //                         title: 'Berhasil!',
-            //                         text: 'Data berhasil dihapus.',
-            //                         timer: 1500,
-            //                         showConfirmButton: false
-            //                     }).then(() => {
-            //                         $('.data-table').DataTable().draw(true);
-            //                     });
-            //                 },
-            //                 error: function(err) {
-            //                     Swal.fire({
-            //                         icon: 'error',
-            //                         title: 'Gagal!',
-            //                         text: 'Terjadi kesalahan saat menghapus data.',
-            //                         timer: 1500,
-            //                         showConfirmButton: false
-            //                     });
-            //                 }
-            //             }).always(function() {
-            //                 location.reload();
-            //             });
-            //         }
-            //     });
-            // });
-
-            $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
+                fixedHeader: true,
+                order: [],
+                language: {
+                    "sSearch": "Pencarian :",
+                    "lengthMenu": "Tampilkan _MENU_ data",
+                    "zeroRecords": "Tidak ditemukan data yang sesuai",
+                    "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "infoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
+                    "infoFiltered": "(disaring dari _MAX_ total data)",
+                    "paginate": {
+                        "next": "Berikutnya",
+                        "previous": "Sebelumnya"
+                    }
+                }
             });
 
-            // Fungsi pencarian dan filtering
-            $('.data-table').on('keyup change', '.search', function() {
-                let index = $(this).closest('td').index();
+            // Apply the search
+            $('.search').on('keyup change', function() {
+                var index = $(this).closest('td').index();
                 table.column(index).search(this.value).draw();
             });
 
-            $('.data-table thead').on('change', '.select2-container', function() {
-                let strict = $(this).attr('strict') || false
-                let value = strict && this.value ? "^" + this.value + "$" : this.value
-                let index = $(this).parent().index()
+            // Apply the select2 dropdown search
+            $('#searchBidan').select2({
+                placeholder: 'Pilih Nama Bidan',
+                allowClear: true
+            });
 
-                table
-                    .column(index)
-                    .search(value, strict)
-                    .draw()
+            // Apply the select2 dropdown search
+            $('#searchJamPraktek').select2({
+                placeholder: 'Pilih Jam Praktek',
+                allowClear: true
+            });
+
+            // Datepicker
+            $('.datepicker').datepicker({
+                format: 'dd-mm-yyyy',
+                autoclose: true,
+                orientation: 'bottom',
+                clearBtn: true
+            });
+
+            // Apply the select2 dropdown search
+            $('#searchBidan, #searchJamPraktek').on('change', function() {
+                var val = $(this).val();
+                var index = $(this).closest('td').index();
+                table.column(index).search(val ? '^' + $(this).val() + '$' : '', true, false).draw();
+            });
+
+            $('#searchJamPraktek').on('change', function() {
+                var val = $(this).val();
+                table.column(2).search(val ? '^' + val + '$' : '', true, false).draw();
             });
 
             // Handling success and error messages
@@ -217,19 +171,6 @@
                     confirmButtonText: 'OK'
                 });
             @endif
-        });
-
-        $(document).ready(function() {
-            // Inisialisasi Select2 untuk kolom Jenis Kelamin
-            $('#searchJamPraktek').select2({
-                placeholder: 'Pilih Jam Praktek',
-                allowClear: true
-            });
-
-            $('#searchBidan').select2({
-                placeholder: 'Pilih Bidan',
-                allowClear: true
-            });
         });
     </script>
 @endsection

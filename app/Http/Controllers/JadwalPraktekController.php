@@ -16,62 +16,59 @@ class JadwalPraktekController extends Controller
 {
     public function index_history(Request $request)
     {
+        $user = Auth::user();
+        $today = Carbon::today()->format('Y-m-d'); // Mendapatkan tanggal hari ini
+
         // Mengambil semua data termasuk kolom asli
-        $jam_praktek = T_JamPraktek::select('jam_mulai', 'jam_selesai')
-            ->orderByRaw('concat(jam_mulai, jam_selesai)')
+        $jam_praktek = T_JamPraktek::select('id', 'jam_mulai', 'jam_selesai')
+            ->orderBy('jam_mulai', 'asc')
             ->get()
             ->map(function ($item) {
                 $item->jam_praktek = $item->jam_mulai . '-' . $item->jam_selesai;
                 return $item;
             });
 
-        $user = Auth::user();
-
         if ($user->role == 'Bidan') {
             $bidan = User::where('role', 'Bidan')->where('id', $user->id)->get();
-        } else {
+            $data = T_JadwalPraktek::with(['jam_praktek', 'bidan'])
+                ->withCount('reservasi_tetap') // Menghitung jumlah reservasi
+                ->where(
+                    'bidan_id',
+                    $user->id
+                )
+                ->where('tanggal', '<', $today) // Menambahkan kondisi tanggal
+                ->orderBy('tanggal', 'desc')  // Mengurutkan berdasarkan kolom 'tanggal' secara descending
+                ->orderBy('jam_praktek_id') // Mengurutkan berdasarkan jam praktek
+                ->get();
+
+            return view('praktek_bidan.index_history', compact('data', 'bidan', 'jam_praktek'));
+        } elseif ($user->role == 'Admin') {
             $bidan = User::where('role', 'Bidan')->get();
+            $data = T_JadwalPraktek::with(['jam_praktek', 'bidan'])
+                ->withCount('reservasi_tetap') // Menghitung jumlah reservasi
+                ->where('tanggal', '<', $today) // Menambahkan kondisi tanggal
+                ->orderBy('tanggal', 'desc')  // Mengurutkan berdasarkan kolom 'tanggal' secara descending
+                ->orderBy('jam_praktek_id') // Mengurutkan berdasarkan jam praktek
+                ->get();
+
+            return view('praktek_bidan.index_history', compact('data', 'bidan', 'jam_praktek'));
+        } elseif ($user->role == 'Pasien') {
+            $pasien = $user->id;
+            $bidan = User::where('role', 'Bidan')->get();
+            $data = T_JadwalPraktek::with(['jam_praktek', 'bidan'])
+                ->withCount(['reservasi_tetap' => function ($query) use ($pasien) {
+                    $query->where('pasien_id', $pasien);
+                }])
+                ->whereHas('reservasi_tetap', function ($query) use ($pasien) {
+                    $query->where('pasien_id', $pasien);
+                })
+                ->where('tanggal', '<', $today)
+                ->orderBy('tanggal', 'desc')
+                ->orderBy('jam_praktek_id')
+                ->get();
+
+            return view('praktek_bidan.index_history', compact('data', 'bidan', 'jam_praktek'));
         }
-
-        if ($request->ajax()) {
-            if ($user->role == 'Bidan') {
-                $data = T_JadwalPraktek::with(['jam_praktek', 'bidan'])
-                    ->withCount('reservasi_tetap') // Menghitung jumlah reservasi
-                    ->where('bidan_id', $user->id)
-                    ->orderBy('tanggal', 'desc')  // Mengurutkan berdasarkan kolom 'tanggal' secara descending
-                    ->orderBy(T_JamPraktek::select('jam_mulai')
-                        ->whereColumn('t_jam_praktek.id', 't_jadwal_praktek.jam_praktek_id')) // Mengurutkan berdasarkan jam praktek secara ascending
-                    ->get();
-            } else {
-                $data = T_JadwalPraktek::with(['jam_praktek', 'bidan'])
-                    ->withCount('reservasi_tetap') // Menghitung jumlah reservasi
-                    ->orderBy('tanggal', 'desc')  // Mengurutkan berdasarkan kolom 'tanggal' secara descending
-                    ->orderBy(T_JamPraktek::select('jam_mulai')
-                        ->whereColumn('t_jam_praktek.id', 't_jadwal_praktek.jam_praktek_id')) // Mengurutkan berdasarkan jam praktek secara ascending
-                    ->get();
-            }
-
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('jam_praktek', function ($row) {
-                    // Menggunakan accessor pada model T_JamPraktek
-                    return $row->jam_praktek->jam_mulai . '-' . $row->jam_praktek->jam_selesai;
-                })
-                ->addColumn('jumlah_reservasi', function ($row) {
-                    $sisa_kuota = $row->kuota - $row->reservasi_tetap_count;
-                    return $sisa_kuota; // Menampilkan sisa kuota
-                })
-                ->addColumn('action', function ($row) {
-                    $btn = '<a href="' . route('jadwal_praktek.show', $row->id) . '" class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>  ';
-                    //$btn .= '<a href="' . route('jadwal_praktek.edit', $row->id) . '" class="edit btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a>  ';
-                    //$btn .= '<button type="button" id="btnHapus" data-remote="' . route('jadwal_praktek.destroy', $row->id) . '" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>';
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-        return view('praktek_bidan.index_history', compact('jam_praktek', 'bidan'));
     }
 
     public function index(Request $request)
@@ -93,65 +90,42 @@ class JadwalPraktekController extends Controller
             $bidan = User::where('role', 'Bidan')->get();
         }
 
-        if ($request->ajax()) {
-            $today = Carbon::today(); // Mendapatkan tanggal hari ini
+        $today = Carbon::today()->format('Y-m-d'); // Mendapatkan tanggal hari ini
 
-            if ($user->role == 'Bidan') {
-                $data = T_JadwalPraktek::with(['jam_praktek', 'bidan'])
-                    ->withCount(['reservasi_tetap' => function ($query) {
-                        $query->where('status', 'Tetap');
-                    }]) // Menghitung jumlah reservasi dengan status "Tetap"
-                    ->where('tanggal', '>=', $today) // Menambahkan kondisi tanggal
-                    ->where('bidan_id', $user->id)
-                    ->orderBy('tanggal', 'desc')  // Mengurutkan berdasarkan kolom 'tanggal' secara descending
-                    ->orderBy(T_JamPraktek::select('jam_mulai')
-                        ->whereColumn('t_jam_praktek.id', 't_jadwal_praktek.jam_praktek_id')) // Mengurutkan berdasarkan jam praktek secara ascending
-                    ->get();
-            } else {
-                $data = T_JadwalPraktek::with(['jam_praktek', 'bidan'])
-                    ->withCount(['reservasi_tetap' => function ($query) {
-                        $query->where('status', 'Tetap');
-                    }]) // Menghitung jumlah reservasi dengan status "Tetap"
-                    ->where('tanggal', '>=', $today) // Menambahkan kondisi tanggal
-                    ->orderBy('tanggal', 'desc')  // Mengurutkan berdasarkan kolom 'tanggal' secara descending
-                    ->orderBy(T_JamPraktek::select('jam_mulai')
-                        ->whereColumn('t_jam_praktek.id', 't_jadwal_praktek.jam_praktek_id')) // Mengurutkan berdasarkan jam praktek secara ascending
-                    ->get();
-            }
-
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('jam_praktek', function ($row) {
-                    // Menggunakan accessor pada model T_JamPraktek
-                    return $row->jam_praktek->jam_mulai . '-' . $row->jam_praktek->jam_selesai;
-                })
-                ->addColumn('jumlah_reservasi', function ($row) {
-                    $sisa_kuota = $row->kuota - $row->reservasi_tetap_count;
-                    return $sisa_kuota; // Menampilkan sisa kuota
-                })
-                ->addColumn('action', function ($row) use ($user) {
-                    $reservasi = T_ReservasiBidan::where('jadwal_praktek_id', $row->id)
-                        ->where('pasien_id', $user->id)
-                        ->first();
-
-                    if ($user->role == 'Pasien') {
-                        if ($reservasi && $reservasi->status != 'Batal') {
-                            $btn = '<a href="' . route('reservasi.edit', $row->id) . '" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a>  ';
-                        } else {
-                            $btn = '<a href="' . route('reservasi.create', $row->id) . '" class="btn btn-success btn-sm"><i class="fa fa-plus"></i></a>  ';
-                        }
-                    } else {
-                        $btn = '<a href="' . route('jadwal_praktek.show', $row->id) . '" class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>  ';
-                        $btn .= '<a href="' . route('jadwal_praktek.edit', $row->id) . '" class="edit btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a>  ';
-                        $btn .= '<button type="button" id="btnHapus" data-remote="' . route('jadwal_praktek.destroy', $row->id) . '" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>';
-                    }
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+        if ($user->role == 'Bidan') {
+            $data = T_JadwalPraktek::with(['jam_praktek', 'bidan'])
+                ->withCount(['reservasi_tetap' => function ($query) {
+                    $query->where('status', 'Tetap');
+                }]) // Menghitung jumlah reservasi dengan status "Tetap"
+                ->where('tanggal', '>=', $today) // Menambahkan kondisi tanggal
+                ->where('bidan_id', $user->id)
+                ->orderBy('tanggal', 'desc')  // Mengurutkan berdasarkan kolom 'tanggal' secara descending
+                ->orderBy('jam_praktek_id') // Mengurutkan berdasarkan jam praktek secara ascending
+                ->get();
+        } else {
+            $data = T_JadwalPraktek::with(['jam_praktek', 'bidan'])
+                ->withCount(['reservasi_tetap' => function ($query) {
+                    $query->where('status', 'Tetap');
+                }]) // Menghitung jumlah reservasi dengan status "Tetap"
+                ->where('tanggal', '>=', $today) // Menambahkan kondisi tanggal
+                ->orderBy('tanggal', 'desc')  // Mengurutkan berdasarkan kolom 'tanggal' secara descending
+                ->orderBy('jam_praktek_id') // Mengurutkan berdasarkan jam praktek secara ascending
+                ->get();
         }
 
-        return view('praktek_bidan.index', compact('jam_praktek', 'bidan'));
+        // Inisialisasi variabel $reservasi jika user memiliki role 'Pasien'
+        $reservasi = null;
+        if ($user->role == 'Pasien') {
+            // Cek apakah data reservasi tersedia untuk user saat ini
+            foreach ($data as $jadwal) {
+                if ($jadwal->reservasi_tetap_count > 0) {
+                    $reservasi = $jadwal->reservasi_tetap->where('pasien_id', $user->id)->first();
+                    break;
+                }
+            }
+        }
+
+        return view('praktek_bidan.index', compact('jam_praktek', 'bidan', 'today', 'data', 'reservasi'));
     }
 
     public function create()
@@ -172,7 +146,7 @@ class JadwalPraktekController extends Controller
     {
         try {
             $request->validate([
-                'tanggal' => 'required|date',
+                'tanggal' => 'required|date_format:d-m-Y',
                 'jam_praktek_id' => 'required|exists:t_jam_praktek,id',
                 'bidan_id' => 'required|exists:users,id',
                 'kuota' => 'required|integer|min:1',
@@ -180,7 +154,7 @@ class JadwalPraktekController extends Controller
 
             $jadwal = new T_JadwalPraktek();
             $jadwal->id = Str::uuid();
-            $jadwal->tanggal = $request->tanggal;
+            $jadwal->tanggal = Carbon::createFromFormat('d-m-Y', $request->tanggal);
             $jadwal->jam_praktek_id = $request->jam_praktek_id;
             $jadwal->bidan_id = $request->bidan_id;
             $jadwal->kuota = $request->kuota;
@@ -213,14 +187,14 @@ class JadwalPraktekController extends Controller
     {
         try {
             $request->validate([
-                'tanggal' => 'required|date',
+                'tanggal' => 'required|date_format:d-m-Y',
                 'jam_praktek_id' => 'required|exists:t_jam_praktek,id',
                 'bidan_id' => 'required|exists:users,id',
                 'kuota' => 'required|integer|min:1',
             ]);
 
             $jadwal = T_JadwalPraktek::findOrFail($id);
-            $jadwal->tanggal = $request->tanggal;
+            $jadwal->tanggal = Carbon::createFromFormat('d-m-Y', $request->tanggal);
             $jadwal->jam_praktek_id = $request->jam_praktek_id;
             $jadwal->bidan_id = $request->bidan_id;
             $jadwal->kuota = $request->kuota;
@@ -235,6 +209,8 @@ class JadwalPraktekController extends Controller
 
     public function show($id)
     {
+        $today = Carbon::today()->format('Y-m-d');
+
         $jadwal = T_JadwalPraktek::withCount(['reservasi_tetap' => function ($query) {
             $query->where('status', 'Tetap')->orWhere('status', 'Jadwal Ulang');
         }])->findOrFail($id);
@@ -250,20 +226,25 @@ class JadwalPraktekController extends Controller
             ->get();
 
         $availableJadwalPraktek = T_JadwalPraktek::with(['jam_praktek', 'bidan'])
-            ->where('tanggal', '>=', now()->toDateString())
+            ->where('tanggal', '>=', Carbon::today()->format('Y-m-d'))
             ->get()
             ->map(function ($jadwal) {
-                // Menghitung jumlah reservasi dengan status bukan "Tetap"
-                $jumlahReservasi = $jadwal->reservasi()->where('status', '!=', 'Batal')->count();
+                // Menghitung jumlah reservasi dengan status "Tetap"
+                // $jumlahReservasiTetap = $jadwal->reservasi()->where('status', 'Tetap')->count();
+                $jumlahReservasiTetap = T_ReservasiBidan::where('jadwal_praktek_id', $jadwal->id)
+                    ->where('status', 'Tetap')
+                    ->count();
+
                 // Menghitung sisa kuota
-                $sisaKuota = $jadwal->kuota - $jumlahReservasi;
+                $sisaKuota = $jadwal->kuota - $jumlahReservasiTetap;
+
                 // Menambahkan atribut sisa kuota
                 $jadwal->sisa_kuota = $sisaKuota;
 
                 return $jadwal;
             });
 
-        return view('jadwal_praktek.show', compact('jadwal', 'sisaKuota', 'pasien', 'reservasi', 'availableJadwalPraktek'));
+        return view('jadwal_praktek.show', compact('jadwal', 'sisaKuota', 'pasien', 'reservasi', 'availableJadwalPraktek', 'today'));
     }
 
     public function destroy($id)

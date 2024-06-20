@@ -5,7 +5,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Detail Pasien</h3>
+                    <h3 class="box-title">Profil Pasien</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -68,8 +68,7 @@
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <a href="{{ route('pasien.index') }}" class="btn btn-danger"><i
-                                        class="fa fa-arrow-left"></i>
+                                <a href="{{ url()->previous() }}" class="btn btn-danger"><i class="fa fa-arrow-left"></i>
                                     Kembali</a>
                             </div>
                             <!-- /.box-footer -->

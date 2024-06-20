@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>SIREBI | Login</title>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -54,6 +55,7 @@
     <!-- Google Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="{{ asset('cms/custom_style.css') }}">
 </head>
 
 
@@ -62,7 +64,7 @@
         <!-- /.login-logo -->
         <div class="login-box-body">
             <div class="login-logo">
-                <b>SIREBI</b>
+                <b><i class="fa fa-hospital-o"></i> SIREBI</b>
             </div>
 
             <form action="{{ route('login') }}" method="post">
@@ -82,7 +84,9 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Login</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">
+                            <i class="fa fa-sign-in"></i>
+                            Login</button>
                     </div>
                     <!-- /.col -->
                 </div>
@@ -91,7 +95,7 @@
             <!-- /.social-auth-links -->
 
             {{-- <a href="#">Lupa Password</a><br> --}}
-            <a href="{{ route('register') }}" class="text-center">Pendaftaran Pasien</a>
+            <a href="{{ route('register') }}" class="text-center"><i class="fa fa-user-plus"></i> Registrasi Pasien</a>
 
         </div>
         <!-- /.login-box-body -->

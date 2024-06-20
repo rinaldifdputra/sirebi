@@ -9,26 +9,16 @@ use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $data = User::where('role', 'Admin')->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $btn = '<a href="' . route('admin.show', $row->id) . '" class="btn btn-info btn-sm"><i class="fa fa-search-plus"></i></a>  ';
-                    $btn .= '<a href="' . route('admin.edit', $row->id) . '" class="edit btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a>  ';
-                    $btn .= '<button type="button" id="btnHapus" data-remote="' . route('admin.destroy', $row->id) . '" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>';
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
+        $users = User::where('role', 'Admin')->get();
 
-        return view('admin.index');
+        return view('admin.index', compact('users'));
     }
 
     public function create()
@@ -41,7 +31,7 @@ class AdminController extends Controller
         try {
             $request->validate([
                 'nama_lengkap' => 'required|string',
-                'tanggal_lahir' => 'required|date_format:Y-m-d',
+                'tanggal_lahir' => 'required|date_format:d-m-Y',
                 'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
                 'username' => 'required|string|unique:users',
                 'password' => 'required|string',
@@ -52,7 +42,7 @@ class AdminController extends Controller
             $user = new User();
             $user->id = Str::uuid();
             $user->nama_lengkap = $request->nama_lengkap;
-            $user->tanggal_lahir = Carbon::createFromFormat('Y-m-d', $request->tanggal_lahir);
+            $user->tanggal_lahir = Carbon::createFromFormat('d-m-Y', $request->tanggal_lahir);
             $user->jenis_kelamin = $request->jenis_kelamin;
             $user->username = $request->username;
             $user->password = Hash::make($request->password);
@@ -80,7 +70,7 @@ class AdminController extends Controller
         try {
             $request->validate([
                 'nama_lengkap' => 'required|string',
-                'tanggal_lahir' => 'required|date_format:Y-m-d',
+                'tanggal_lahir' => 'required|date_format:d-m-Y',
                 'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
                 'username' => 'required|string|unique:users,username,' . $id,
                 'no_hp' => 'required|string',
@@ -89,7 +79,7 @@ class AdminController extends Controller
 
             $user = User::findOrFail($id);
             $user->nama_lengkap = $request->nama_lengkap;
-            $user->tanggal_lahir = Carbon::createFromFormat('Y-m-d', $request->tanggal_lahir);
+            $user->tanggal_lahir = Carbon::createFromFormat('d-m-Y', $request->tanggal_lahir);
             $user->jenis_kelamin = $request->jenis_kelamin;
             $user->username = $request->username;
             $user->no_hp = $request->no_hp;
@@ -112,10 +102,13 @@ class AdminController extends Controller
 
     public function destroy($id)
     {
+        Log::info('Request received to delete user with id: ' . $id);
+
         try {
             User::destroy($id);
             return redirect()->route('admin.index')->with('success', 'Admin berhasil dihapus.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            Log::error('Error deleting user: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Gagal menghapus admin: ' . $e->getMessage()]);
         }
     }

@@ -27,7 +27,8 @@
                                 <div class="form-group">
                                     <label for="tanggal_lahir" class="col-sm-2 control-label">Tanggal Lahir:</label>
                                     <div class="col-sm-10">
-                                        <p class="form-control-static">{{ $user->tanggal_lahir }}</p>
+                                        <p class="form-control-static">
+                                            {{ \Carbon\Carbon::parse($user->tanggal_lahir)->format('d-m-Y') }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -51,19 +52,23 @@
                                 <div class="form-group">
                                     <label for="created_at" class="col-sm-2 control-label">Dibuat pada:</label>
                                     <div class="col-sm-10">
-                                        <p class="form-control-static">{{ $user->created_at }}</p>
+                                        <p class="form-control-static">
+                                            {{ \Carbon\Carbon::parse($user->created_at)->format('d-m-Y H:i:s') }}
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="updated_at" class="col-sm-2 control-label">Diperbarui pada:</label>
                                     <div class="col-sm-10">
-                                        <p class="form-control-static">{{ $user->updated_at }}</p>
+                                        <p class="form-control-static">
+                                            {{ \Carbon\Carbon::parse($user->updated_at)->format('d-m-Y H:i:s') }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <a href="{{ route('bidan.index') }}" class="btn btn-info"><i class="fa fa-arrow-left"></i>
+                                <a href="{{ route('bidan.index') }}" class="btn btn-danger"><i class="fa fa-arrow-left"></i>
                                     Kembali</a>
                             </div>
                             <!-- /.box-footer -->

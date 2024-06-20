@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> Reservasi Bidan | SIREBI</title>
-
     <link rel="stylesheet" href="{{ asset('website/assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('website/assets/css/fontawsom-all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('website/assets/css/animate.css') }}">

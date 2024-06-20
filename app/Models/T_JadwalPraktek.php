@@ -28,7 +28,7 @@ class T_JadwalPraktek extends Model
 
     public function reservasi()
     {
-        return $this->hasMany(T_ReservasiBidan::class, 'jadwal_praktek_id', 'id');
+        return $this->hasMany(T_ReservasiBidan::class, 'jadwal_praktek_id');
     }
 
     public function reservasi_lama()

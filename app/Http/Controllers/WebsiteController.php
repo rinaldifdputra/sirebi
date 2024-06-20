@@ -13,7 +13,7 @@ class WebsiteController extends Controller
 {
     public function index()
     {
-        $today = Carbon::today(); // Mendapatkan tanggal hari ini
+        $today = Carbon::today()->format('Y-m-d'); // Mendapatkan tanggal hari ini
         $data = T_JadwalPraktek::with(['jam_praktek', 'bidan'])
             ->withCount('reservasi') // Menghitung jumlah reservasi
             ->where('tanggal', '>=', $today)

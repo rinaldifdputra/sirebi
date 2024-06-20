@@ -65,3 +65,68 @@ div.dataTables_wrapper div.dataTables_filter label {
 .form-group {
     margin-bottom: 5px;
 }
+
+.navbar-nav>.tasks-menu>.dropdown-menu>li .menu {
+    max-height: 200px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: hidden;
+    text-align: right;
+}
+
+.navbar-nav>.tasks-menu>.dropdown-menu {
+    width: 150px;
+    padding: 0 0 0 0;
+    margin: 0;
+    top: 100%;
+}
+
+td {
+    vertical-align: middle !important;
+    /* Menengahkan konten tombol di dalam sel */
+}
+
+.btn {
+    margin-bottom: 5px;
+    /* Mengatur margin antar tombol */
+    display: inline-block;
+    /* Mengubah tombol menjadi inline-block */
+}
+
+/* CSS for table headers with specific background color and text color */
+/* th {
+    background-color: #3c8dbc;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+} */
+
+/* Optional: Additional styling for table headers */
+/* th:first-child {
+    border-top-left-radius: 5px;
+}
+
+th:last-child {
+    border-top-right-radius: 5px;
+} */
+
+/* Ensuring the table looks good */
+/* table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+} */

@@ -1,218 +1,154 @@
 @extends('components.layout')
+
 @section('content')
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Daftar Jam Praktek</h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="mb-4">
-                        <a href="{{ route('jam_praktek.create') }}" class="btn btn-success"><i class="fa fa-user-plus"></i>
-                            Tambah
-                            Data</a>
-                    </div>
-                    <table class="table table-bordered data-table" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Jam Mulai</th>
-                                <th>Jam Selesai</th>
-                                <th>Aksi</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <select class="select2-container" id="searchJamMulai">
-                                        <option value=""></option>
-                                        @for ($i = 0; $i <= 24; $i++)
-                                            <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00">
-                                                {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00
-                                            </option>
-                                        @endfor
-                                    </select>
-                                </td>
-                                <td><select class="select2-container" id="searchJamSelesai">
-                                        <option value=""></option>
-                                        @for ($i = 0; $i <= 24; $i++)
-                                            <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00">
-                                                {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00
-                                            </option>
-                                        @endfor
-                                    </select>
-                                </td>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Daftar Jam Praktek</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="mb-4">
+                <a href="{{ route('jam_praktek.create') }}" class="btn btn-success"><i class="fa fa-user-plus"></i> Tambah
+                    Data</a>
             </div>
+            <table class="table table-bordered" id="data-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Jam Mulai</th>
+                        <th>Jam Selesai</th>
+                        <th>Aksi</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <select class="select2-container" id="searchJamMulai">
+                                <option value=""></option>
+                                @for ($i = 0; $i <= 24; $i++)
+                                    <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00">
+                                        {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00
+                                    </option>
+                                @endfor
+                            </select>
+                        </td>
+                        <td>
+                            <select class="select2-container" id="searchJamSelesai">
+                                <option value=""></option>
+                                @for ($i = 0; $i <= 24; $i++)
+                                    <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00">
+                                        {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00
+                                    </option>
+                                @endfor
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $key => $item)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td class="jam-mulai">{{ $item->jam_mulai }}</td>
+                            <td class="jam-selesai">{{ $item->jam_selesai }}</td>
+                            <td>
+                                <a href="{{ route('jam_praktek.show', $item->id) }}" class="btn btn-info btn-sm"><i
+                                        class="fa fa-search-plus"></i></a>
+                                <a href="{{ route('jam_praktek.edit', $item->id) }}" class="btn btn-warning btn-sm"><i
+                                        class="fa fa-pencil-square-o"></i></a>
+                                <form action="{{ route('jam_praktek.destroy', $item->id) }}" method="post"
+                                    class="d-inline" id="deleteForm-{{ $item->id }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="btn btn-danger btn-sm delete-btn"
+                                        data-id="{{ $item->id }}"><i class="fa fa-trash-o"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        $(function() {
-            // Inisialisasi DataTables
-            let dtOverrideGlobals = {
-                processing: true,
-                serverSide: true,
-                retrieve: true,
-                aaSorting: [],
-                ajax: "{{ route('jam_praktek.index') }}",
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'jam_mulai',
-                        name: 'jam_mulai'
-                    },
-                    {
-                        data: 'jam_selesai',
-                        name: 'jam_selesai'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false,
-                        width: '10%'
-                    },
-                ],
-                orderCellsTop: true,
-                order: [
-                    [1, 'asc']
-                ],
-                pageLength: 10,
-                lengthMenu: [
-                    [10, 25, 50, 100],
-                    [10, 25, 50, 100]
-                ],
-            };
-
-            let table = $('.data-table').DataTable(dtOverrideGlobals);
-
-            // // Datepicker untuk kolom Tanggal Lahir
-            // $('.datepicker').datepicker({
-            //     autoclose: true,
-            //     format: 'yyyy-mm-dd'
-            // });
-
-            // Aksi saat tombol delete diklik
-            $('.data-table').on('click', '#btnHapus[data-remote]', function(e) {
-                e.preventDefault();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                var url = $(this).data('remote');
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Konfirmasi',
-                    text: 'Apakah ingin menghapus data ini?',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, hapus',
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    cancelButtonText: 'Tidak',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            dataType: 'json',
-                            data: {
-                                _method: 'DELETE',
-                                "_token": "{{ csrf_token() }}"
-                            },
-                            success: function(data) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: 'Data berhasil dihapus.',
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                }).then(() => {
-                                    $('.data-table').DataTable().draw(true);
-                                });
-                            },
-                            error: function(err) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Gagal!',
-                                    text: 'Terjadi kesalahan saat menghapus data.',
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                });
-                            }
-                        }).always(function() {
-                            location.reload();
-                        });
-                    }
-                });
+        $(document).on('click', '.delete-btn', function() {
+            var id = $(this).data('id');
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Anda akan menghapus data ini',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteForm-' + id).submit();
+                } else if (result.isDenied) {
+                    Swal.fire('Data gagal dihapus', '', 'info');
+                }
             });
-
-            $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e) {
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
-            });
-
-            // Fungsi pencarian dan filtering
-            $('.data-table').on('keyup change', '.search', function() {
-                let index = $(this).closest('td').index();
-                table.column(index).search(this.value).draw();
-            });
-
-            $('.data-table thead').on('change', '.select2-container', function() {
-                let strict = $(this).attr('strict') || false
-                let value = strict && this.value ? "^" + this.value + "$" : this.value
-                let index = $(this).parent().index()
-
-                table
-                    .column(index)
-                    .search(value, strict)
-                    .draw()
-            });
-
-            // Handling success and error messages
-            @if (session('success'))
-                Swal.fire({
-                    title: 'Berhasil!',
-                    text: '{{ session('success') }}',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            @endif
-
-            @if ($errors->any())
-                Swal.fire({
-                    title: 'Gagal!',
-                    text: '{{ $errors->first() }}',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            @endif
         });
 
+        // Handling success and error messages
+        @if (session('success'))
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        @endif
+
+        @if ($errors->any())
+            Swal.fire({
+                title: 'Gagal!',
+                text: '{{ $errors->first() }}',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        @endif
+
         $(document).ready(function() {
-            // Inisialisasi Select2 untuk kolom Jenis Kelamin
-            $('#searchJamMulai').select2({
-                placeholder: 'Pilih Jam Mulai',
+            // Initialize DataTables
+            var table = $('#data-table').DataTable({
+                processing: true,
+                serverSide: false,
+                orderCellsTop: true,
+                fixedHeader: true,
+                order: [],
+                language: {
+                    "sSearch": "Pencarian :",
+                    "lengthMenu": "Tampilkan _MENU_ data",
+                    "zeroRecords": "Tidak ditemukan data yang sesuai",
+                    "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "infoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
+                    "infoFiltered": "(disaring dari _MAX_ total data)",
+                    "paginate": {
+                        "next": "Berikutnya",
+                        "previous": "Sebelumnya"
+                    }
+                }
+            });
+
+            // Initialize Select2
+            $('#searchJamMulai, #searchJamSelesai').select2({
+                placeholder: 'Pilih',
                 allowClear: true
             });
 
-            $('#searchJamSelesai').select2({
-                placeholder: 'Pilih Jam Selesai',
-                allowClear: true
+            // Filter functionality
+            $('#searchJamMulai').on('change', function() {
+                var value = $(this).val();
+                table.columns(1).search(value).draw(); // Update the column index
             });
+
+            $('#searchJamSelesai').on('change', function() {
+                var value = $(this).val();
+                table.columns(2).search(value).draw(); // Update the column index
+            });
+
         });
     </script>
 @endsection
