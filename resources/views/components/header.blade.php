@@ -3,21 +3,21 @@
     @if (Auth::user()->role == 'Admin')
         <a href="{{ route('admin_dashboard.dashboard') }}" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>S</b>RB</span>
+            <span class="logo-mini"><b><i class="fa fa-hospital-o"></i></b></span>
             <!-- logo for regular state and mobile devices -->
             <span class="logo-lg"><b><i class="fa fa-hospital-o"></i> SIREBI</b></span>
         </a>
     @elseif (Auth::user()->role == 'Bidan')
         <a href="{{ route('bidan_dashboard.dashboard') }}" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>S</b>RB</span>
+            <span class="logo-mini"><b><i class="fa fa-hospital-o"></i></b></span>
             <!-- logo for regular state and mobile devices -->
             <span class="logo-lg"><b><i class="fa fa-hospital-o"></i> SIREBI</b></span>
         </a>
     @elseif (Auth::user()->role == 'Pasien')
         <a href="{{ route('pasien_dashboard.dashboard') }}" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>S</b>RB</span>
+            <span class="logo-mini"><b><i class="fa fa-hospital-o"></i></b></span>
             <!-- logo for regular state and mobile devices -->
             <span class="logo-lg"><b><i class="fa fa-hospital-o"></i> SIREBI</b></span>
         </a>

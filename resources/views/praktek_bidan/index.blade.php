@@ -13,9 +13,9 @@
                         Data</a>
                 </div>
             @endif
-            <table class="table table-bordered data-table" style="width: 100%">
+            <table class="table table-bordered data-table table-striped" style="width: 100%">
                 <thead>
-                    <tr>
+                    <tr id="header">
                         <th>No</th>
                         <th>Tanggal</th>
                         <th>Jam Praktek</th>
@@ -110,7 +110,7 @@
                                     <a href="{{ route('jadwal_praktek.edit', $jadwal->id) }}"
                                         class="edit btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a>
                                     <form action="{{ route('jadwal_praktek.destroy', $jadwal->id) }}" method="post"
-                                        id="deleteForm">
+                                        id="deleteForm" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" class="btn btn-danger btn-sm" id="btnHapus"><i
@@ -171,7 +171,8 @@
                 format: 'dd-mm-yyyy',
                 autoclose: true,
                 orientation: 'bottom',
-                clearBtn: true
+                clearBtn: true,
+                startDate: new Date()
             });
 
             // Apply the select2 dropdown search

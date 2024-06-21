@@ -10,9 +10,9 @@
             <div class="mb-4">
                 <a href="{{ route('bidan.create') }}" class="btn btn-success"><i class="fa fa-user-plus"></i> Tambah Data</a>
             </div>
-            <table class="table table-bordered data-table" style="width: 100%">
+            <table class="table table-bordered data-table table-striped" style="width: 100%">
                 <thead>
-                    <tr>
+                    <tr id="header">
                         <th>No</th>
                         <th>Nama Lengkap</th>
                         <th>Tanggal Lahir</th>
@@ -43,14 +43,15 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $user->nama_lengkap }}</td>
                             <td>{{ \Carbon\Carbon::parse($user->tanggal_lahir)->format('d-m-Y') }}</td>
-                            <td>{{ $user->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                            <td>{{ $user->jenis_kelamin }}</td>
                             <td>{{ $user->no_hp }}</td>
                             <td>
                                 <a href="{{ route('bidan.show', $user->id) }}" class="btn btn-info btn-sm"><i
                                         class="fa fa-search-plus"></i></a>
                                 <a href="{{ route('bidan.edit', $user->id) }}" class="btn btn-warning btn-sm"><i
                                         class="fa fa-pencil-square-o"></i></a>
-                                <form action="{{ route('bidan.destroy', $user->id) }}" method="post" id="deleteForm">
+                                <form action="{{ route('bidan.destroy', $user->id) }}" method="post" id="deleteForm"
+                                    class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" class="btn btn-danger btn-sm" id="btnHapus"><i
@@ -109,6 +110,7 @@
             $('.datepicker').datepicker({
                 format: 'dd-mm-yyyy',
                 autoclose: true,
+                clearBtn: true,
                 orientation: 'bottom'
             });
 

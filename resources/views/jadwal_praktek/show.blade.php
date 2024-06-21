@@ -15,7 +15,7 @@
                     @endif
                     <table id="data-table" class="table table-bordered table-hover" style="width: 100%">
                         <thead>
-                            <tr>
+                            <tr id="header">
                                 <th>No</th>
                                 <th>Antrian</th>
                                 <th>Nama</th>
@@ -55,7 +55,7 @@
                                             @endif
 
                                             <form action="{{ route('reservasi.destroy', ['id' => $value->id]) }}"
-                                                method="post">
+                                                method="post" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="btn btn-danger btn-sm" id="btnHapus"><i
@@ -88,15 +88,16 @@
 
                                                                 <div class="form-group row">
                                                                     <label for="edit_tanggal"
-                                                                        class="col-sm-4 col-form-label text-right">Tanggal:</label>
+                                                                        class="col-sm-4 col-form-label text-right">Tanggal
+                                                                        :</label>
                                                                     <div class="col-sm-8">
-                                                                        {{ $value->jadwal_praktek->tanggal }}
+                                                                        {{ \Carbon\Carbon::parse($value->jadwal_praktek->tanggal)->format('d-m-Y') }}
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group row">
                                                                     <label for="edit_jam_praktek"
                                                                         class="col-sm-4 col-form-label text-right">Jam
-                                                                        Praktek:</label>
+                                                                        Praktek :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $value->jadwal_praktek->jam_praktek->jam_mulai }}
                                                                         -
@@ -105,14 +106,16 @@
                                                                 </div>
                                                                 <div class="form-group row">
                                                                     <label for="edit_bidan"
-                                                                        class="col-sm-4 col-form-label text-right">Bidan:</label>
+                                                                        class="col-sm-4 col-form-label text-right">Bidan
+                                                                        :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $value->jadwal_praktek->bidan->nama_lengkap }}
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group row">
                                                                     <label for="edit_kuota"
-                                                                        class="col-sm-4 col-form-label text-right">Kuota:</label>
+                                                                        class="col-sm-4 col-form-label text-right">Kuota
+                                                                        :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $value->jadwal_praktek->kuota }}
                                                                     </div>
@@ -120,7 +123,7 @@
                                                                 <div class="form-group row">
                                                                     <label for="edit_sisa_kuota"
                                                                         class="col-sm-4 col-form-label text-right">Sisa
-                                                                        Kuota:</label>
+                                                                        Kuota :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $sisaKuota }}
                                                                     </div>
@@ -128,7 +131,7 @@
                                                                 <div class="form-group row">
                                                                     <label for="edit_pasien_id"
                                                                         class="col-sm-4 col-form-label text-right">Nama
-                                                                        Pasien:</label>
+                                                                        Pasien :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $value->pasien->nama_lengkap }}
                                                                     </div>
@@ -136,7 +139,7 @@
                                                                 <div class="form-group row">
                                                                     <label for="edit_pasien_id"
                                                                         class="col-sm-4 col-form-label text-right">Status
-                                                                        Saat Ini:</label>
+                                                                        Saat Ini :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $value->status }}
                                                                     </div>
@@ -144,10 +147,10 @@
                                                                 <div class="form-group row">
                                                                     <label for="edit_status"
                                                                         class="col-sm-4 col-form-label text-right">Status
-                                                                        Diubah Ke:</label>
+                                                                        Diubah Ke :</label>
                                                                     <div class="col-sm-8">
                                                                         <select class="select2" name="status"
-                                                                            id="edit_status" required>
+                                                                            id="status_batal" required>
                                                                             <option value="Batal"
                                                                                 {{ $value->status == 'Batal' ? 'selected' : '' }}>
                                                                                 Batal</option>
@@ -157,7 +160,7 @@
 
                                                                 <div class="form-group row">
                                                                     <label for="edit_keterangan"
-                                                                        class="col-sm-4 col-form-label text-right">Keterangan:</label>
+                                                                        class="col-sm-4 col-form-label text-right">Keterangan :</label>
                                                                     <div class="col-sm-8">
                                                                         <textarea class="form-control" name="keterangan" id="edit_keterangan" rows="3">{{ $value->keterangan }}</textarea>
                                                                     </div>
@@ -168,8 +171,8 @@
                                                                     data-dismiss="modal">
                                                                     <i class="fa fa-arrow-left"></i> Batal
                                                                 </button>
-                                                                <button type="submit"
-                                                                    class="btn btn-success btnEditReservasi">
+                                                                <button type="submit" class="btn btn-success"
+                                                                    id="btnEditReservasi">
                                                                     <i class="fa fa-save"></i> Simpan
                                                                 </button>
                                                             </div>
@@ -206,15 +209,16 @@
 
                                                                 <div class="form-group row">
                                                                     <label for="edit_tanggal"
-                                                                        class="col-sm-4 col-form-label text-right">Tanggal:</label>
+                                                                        class="col-sm-4 col-form-label text-right">Tanggal
+                                                                        :</label>
                                                                     <div class="col-sm-8">
-                                                                        {{ $value->jadwal_praktek->tanggal }}
+                                                                        {{ \Carbon\Carbon::parse($value->jadwal_praktek->tanggal)->format('d-m-Y') }}
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group row">
                                                                     <label for="edit_jam_praktek"
                                                                         class="col-sm-4 col-form-label text-right">Jam
-                                                                        Praktek:</label>
+                                                                        Praktek :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $value->jadwal_praktek->jam_praktek->jam_mulai }}
                                                                         -
@@ -223,14 +227,16 @@
                                                                 </div>
                                                                 <div class="form-group row">
                                                                     <label for="edit_bidan"
-                                                                        class="col-sm-4 col-form-label text-right">Bidan:</label>
+                                                                        class="col-sm-4 col-form-label text-right">Bidan
+                                                                        :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $value->jadwal_praktek->bidan->nama_lengkap }}
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group row">
                                                                     <label for="edit_kuota"
-                                                                        class="col-sm-4 col-form-label text-right">Kuota:</label>
+                                                                        class="col-sm-4 col-form-label text-right">Kuota
+                                                                        :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $value->jadwal_praktek->kuota }}
                                                                     </div>
@@ -238,7 +244,7 @@
                                                                 <div class="form-group row">
                                                                     <label for="edit_sisa_kuota"
                                                                         class="col-sm-4 col-form-label text-right">Sisa
-                                                                        Kuota:</label>
+                                                                        Kuota :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $sisaKuota }}
                                                                     </div>
@@ -246,7 +252,7 @@
                                                                 <div class="form-group row">
                                                                     <label for="edit_pasien_id"
                                                                         class="col-sm-4 col-form-label text-right">Nama
-                                                                        Pasien:</label>
+                                                                        Pasien :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $value->pasien->nama_lengkap }}
                                                                     </div>
@@ -255,7 +261,7 @@
                                                                     <label for="edit_pasien_id"
                                                                         class="col-sm-4 col-form-label text-right">Status
                                                                         Saat
-                                                                        Ini:</label>
+                                                                        Ini :</label>
                                                                     <div class="col-sm-8">
                                                                         {{ $value->status }}
                                                                     </div>
@@ -263,10 +269,10 @@
                                                                 <div class="form-group row">
                                                                     <label for="edit_status"
                                                                         class="col-sm-4 col-form-label text-right">Status
-                                                                        Diubah Ke:</label>
+                                                                        Diubah Ke :</label>
                                                                     <div class="col-sm-8">
                                                                         <select class="select2" name="status"
-                                                                            id="edit_status" required>
+                                                                            id="status_jadwal_ulang" required>
                                                                             @if (Auth::user()->role != 'Pasien')
                                                                                 <option value="Jadwal Ulang"
                                                                                     {{ $value->status == 'Jadwal Ulang' ? 'selected' : '' }}>
@@ -279,10 +285,10 @@
                                                                 <div class="form-group row">
                                                                     <label for="edit_jadwal_praktek_id"
                                                                         class="col-sm-4 col-form-label text-right">Jadwal
-                                                                        Praktek:</label>
+                                                                        Praktek :</label>
                                                                     <div class="col-sm-8">
                                                                         <select class="select2" name="jadwal_praktek_id"
-                                                                            id="edit_jadwal_praktek_id">
+                                                                            id="jadwal_praktek_id">
                                                                             @foreach ($availableJadwalPraktek as $jadwal)
                                                                                 <option value="{{ $jadwal->id }}"
                                                                                     {{ $value->jadwal_praktek_id == $jadwal->id ? 'selected' : '' }}>
@@ -299,7 +305,7 @@
 
                                                                 <div class="form-group row">
                                                                     <label for="edit_keterangan"
-                                                                        class="col-sm-4 col-form-label text-right">Keterangan:</label>
+                                                                        class="col-sm-4 col-form-label text-right">Keterangan :</label>
                                                                     <div class="col-sm-8">
                                                                         <textarea class="form-control" name="keterangan" id="edit_keterangan" rows="3">{{ $value->keterangan }}</textarea>
                                                                     </div>
@@ -310,8 +316,8 @@
                                                                     data-dismiss="modal">
                                                                     <i class="fa fa-arrow-left"></i> Batal
                                                                 </button>
-                                                                <button type="submit"
-                                                                    class="btn btn-success btnJadwalUlangReservasi">
+                                                                <button type="submit" class="btn btn-success"
+                                                                    id="btnJadwalUlangReservasi">
                                                                     <i class="fa fa-save"></i> Simpan
                                                                 </button>
                                                             </div>
@@ -429,7 +435,7 @@
                         <div class="form-horizontal">
                             <div class="box-body">
                                 <div class="form-group row">
-                                    <label for="tanggal" class="col-sm-2 control-label text-right">Tanggal:</label>
+                                    <label for="tanggal" class="col-sm-2 control-label text-right">Tanggal :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">
                                             {{ \Carbon\Carbon::parse($jadwal->tanggal)->format('d-m-Y') }}</p>
@@ -437,26 +443,26 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="jam_praktek_id" class="col-sm-2 control-label text-right">Jam
-                                        Praktek:</label>
+                                        Praktek :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $jadwal->jam_praktek->jam_mulai }} -
                                             {{ $jadwal->jam_praktek->jam_selesai }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="bidan_id" class="col-sm-2 control-label text-right">Bidan:</label>
+                                    <label for="bidan_id" class="col-sm-2 control-label text-right">Bidan :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $jadwal->bidan->nama_lengkap }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="kuota" class="col-sm-2 control-label text-right">Kuota:</label>
+                                    <label for="kuota" class="col-sm-2 control-label text-right">Kuota :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $jadwal->kuota }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group row" id="sisa-kuota">
-                                    <label for="kuota" class="col-sm-2 control-label text-right">Sisa Kuota:</label>
+                                    <label for="kuota" class="col-sm-2 control-label text-right">Sisa Kuota :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $sisaKuota }}</p>
                                     </div>
@@ -467,7 +473,7 @@
                 </div>
                 <div class="box-body">
                     <div class="box-footer">
-                        <a href="{{ url()->previous() }}" class="btn btn-info">
+                        <a href="{{ url()->previous() }}" class="btn btn-danger">
                             <i class="fa fa-arrow-left"></i> Kembali
                         </a>
                     </div>
@@ -493,28 +499,28 @@
                     <div class="modal-body">
                         <input type="hidden" name="jadwal_praktek_id" value="{{ $jadwal->id }}">
                         <div class="form-group row">
-                            <label for="tanggal" class="col-sm-5 control-label text-right">Tanggal:</label>
+                            <label for="tanggal" class="col-sm-5 control-label text-right">Tanggal :</label>
                             <div class="col-sm-7">{{ $jadwal->tanggal }}</div>
                         </div>
                         <div class="form-group row">
-                            <label for="jam_praktek" class="col-sm-5 control-label text-right">Jam Praktek:</label>
+                            <label for="jam_praktek" class="col-sm-5 control-label text-right">Jam Praktek :</label>
                             <div class="col-sm-7">{{ $jadwal->jam_praktek->jam_mulai }} -
                                 {{ $jadwal->jam_praktek->jam_selesai }}</div>
                         </div>
                         <div class="form-group row">
-                            <label for="bidan" class="col-sm-5 control-label text-right">Bidan:</label>
+                            <label for="bidan" class="col-sm-5 control-label text-right">Bidan :</label>
                             <div class="col-sm-7">{{ $jadwal->bidan->nama_lengkap }}</div>
                         </div>
                         <div class="form-group row">
-                            <label for="kuota" class="col-sm-5 control-label text-right">Kuota:</label>
+                            <label for="kuota" class="col-sm-5 control-label text-right">Kuota :</label>
                             <div class="col-sm-7">{{ $jadwal->kuota }}</div>
                         </div>
                         <div class="form-group row">
-                            <label for="sisa_kuota" class="col-sm-5 control-label text-right">Sisa Kuota:</label>
+                            <label for="sisa_kuota" class="col-sm-5 control-label text-right">Sisa Kuota :</label>
                             <div class="col-sm-7">{{ $sisaKuota }}</div>
                         </div>
                         <div class="form-group row">
-                            <label for="pasien_id" class="col-sm-5 control-label text-right">Nama Pasien:</label>
+                            <label for="pasien_id" class="col-sm-5 control-label text-right">Nama Pasien :</label>
                             <div class="col-sm-7">
                                 <select class="select2" name="pasien_id" id="pasien_id" required>
                                     <option value="">Pilih Pasien</option>
@@ -558,7 +564,27 @@
             });
 
             // Initialize Select2
-            $('.select2').select2();
+            //$('.select2').select2();
+
+            $('#pasien_id').select2({
+                placeholder: 'Pilih Pasien',
+                allowClear: true
+            });
+
+            $('#status_batal').select2({
+                placeholder: 'Pilih Status',
+                allowClear: true
+            });
+
+            $('#status_jadwal_ulang').select2({
+                placeholder: 'Pilih Status',
+                allowClear: true
+            });
+
+            $('#jadwal_praktek_id').select2({
+                placeholder: 'Pilih Jadwal Praktek',
+                allowClear: true
+            });
 
             // Show Add Reservation Modal
             $('#tambah-reservasi').on('click', function() {
@@ -593,7 +619,7 @@
                 }
             });
 
-            $(document).on('click', '.btnEditReservasi', function() {
+            $(document).on('click', '#btnEditReservasi', function() {
                 var reservasiId = $(this).closest('form').find('[name="id"]').val();
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
@@ -612,7 +638,7 @@
                 });
             });
 
-            $(document).on('click', '.btnJadwalUlangReservasi', function() {
+            $(document).on('click', '#btnJadwalUlangReservasi', function() {
                 var reservasiId = $(this).closest('form').find('[name="id"]').val();
                 Swal.fire({
                     title: 'Apakah Anda yakin?',

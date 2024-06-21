@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\T_JadwalPraktek;
 use App\Models\T_JamPraktek;
+use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\FuncCall;
@@ -27,7 +28,9 @@ class WebsiteController extends Controller
                 return $item;
             });
 
-        return view('website.index', compact('data'));
+        $bidan = User::where('role', 'Bidan')->get();
+
+        return view('website.index', compact('data', 'bidan'));
     }
 
     public function about()

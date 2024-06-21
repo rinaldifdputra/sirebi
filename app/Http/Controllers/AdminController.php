@@ -102,9 +102,14 @@ class AdminController extends Controller
 
     public function destroy($id)
     {
-        Log::info('Request received to delete user with id: ' . $id);
-
         try {
+            $user = User::findOrFail($id);
+
+            // Cek apakah ada jadwal praktek yang menggunakan jam praktek ini
+            if ($user->reservasi()->exists() || $user->reservasi_lama()->exists()) {
+                return back()->withErrors(['error' => 'Admin sudah ada di tabel lain.']);
+            }
+
             User::destroy($id);
             return redirect()->route('admin.index')->with('success', 'Admin berhasil dihapus.');
         } catch (Exception $e) {

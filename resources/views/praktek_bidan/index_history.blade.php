@@ -4,13 +4,19 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">History Daftar Jadwal Praktek</h3>
+                    <h3 class="box-title">
+                        @if (Auth::user()->role != 'Pasien')
+                            History Daftar Jadwal Praktek
+                        @else
+                            History Daftar Reservasi
+                        @endif
+                    </h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table class="table table-bordered data-table" style="width: 100%">
+                    <table class="table table-bordered data-table table-striped" style="width: 100%">
                         <thead>
-                            <tr>
+                            <tr id="header">
                                 <th>No</th>
                                 <th>Tanggal</th>
                                 <th>Jam Praktek</th>
@@ -138,7 +144,8 @@
                 format: 'dd-mm-yyyy',
                 autoclose: true,
                 orientation: 'bottom',
-                clearBtn: true
+                clearBtn: true,
+                endDate: new Date()
             });
 
             // Apply the select2 dropdown search

@@ -13,7 +13,7 @@
             </div>
             <table class="table table-bordered" id="data-table">
                 <thead>
-                    <tr>
+                    <tr id="header">
                         <th>No</th>
                         <th>Jam Mulai</th>
                         <th>Jam Selesai</th>
@@ -56,7 +56,7 @@
                                 <a href="{{ route('jam_praktek.edit', $item->id) }}" class="btn btn-warning btn-sm"><i
                                         class="fa fa-pencil-square-o"></i></a>
                                 <form action="{{ route('jam_praktek.destroy', $item->id) }}" method="post"
-                                    class="d-inline" id="deleteForm-{{ $item->id }}">
+                                    id="deleteForm-{{ $item->id }}" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" class="btn btn-danger btn-sm delete-btn"

@@ -55,7 +55,7 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8 vkjd ohs">
                     <h2><i class="far fa-clock"></i> Jadwal Praktek</h2>
-                    <table class="table table-bordered data-table" style="width: 100%">
+                    <table class="table table-bordered data-table table-striped" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -95,7 +95,18 @@
                 <h2>Tim Kami</h2>
             </div>
             <div class="row team-row">
-                <div class="col-md-3 col-sm-6">
+                @foreach ($bidan as $item)
+                    <div class="col-md-3 col-sm-6">
+                        <div class="single-usr">
+                            <img src="website/assets/images/team/team-memb2.jpg" alt="">
+                            <div class="det-o">
+                                <h4>{{ $item->nama_lengkap }}</h4>
+                                <i>{{ $item->pekerjaan }}</i>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+                {{-- <div class="col-md-3 col-sm-6">
                     <div class="single-usr">
                         <img src="website/assets/images/team/team-memb1.jpg" alt="">
                         <div class="det-o">
@@ -130,7 +141,7 @@
                             <i>Facial Surgan</i>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
 

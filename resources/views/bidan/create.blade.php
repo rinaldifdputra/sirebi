@@ -13,7 +13,7 @@
                             @csrf
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="nama_lengkap" class="col-sm-2 control-label">Nama Lengkap</label>
+                                    <label for="nama_lengkap" class="col-sm-2 control-label">Nama Lengkap :</label>
                                     <div class="col-sm-10">
                                         <input type="text"
                                             class="form-control @error('nama_lengkap') is-invalid @enderror"
@@ -25,7 +25,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="tanggal_lahir" class="col-sm-2 control-label">Tanggal Lahir</label>
+                                    <label for="tanggal_lahir" class="col-sm-2 control-label">Tanggal Lahir :</label>
                                     <div class="col-sm-10">
                                         <input type="text"
                                             class="form-control datepicker @error('tanggal_lahir') is-invalid @enderror"
@@ -37,7 +37,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Jenis Kelamin</label>
+                                    <label class="col-sm-2 control-label">Jenis Kelamin :</label>
                                     <div class="col-sm-10">
                                         <div class="form-check">
                                             <input class="form-check-input @error('jenis_kelamin') is-invalid @enderror"
@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="username" class="col-sm-2 control-label">Username</label>
+                                    <label for="username" class="col-sm-2 control-label">Username :</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control @error('username') is-invalid @enderror"
                                             id="username" name="username" placeholder="Username"
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password" class="col-sm-2 control-label">Password</label>
+                                    <label for="password" class="col-sm-2 control-label">Password :</label>
                                     <div class="col-sm-10">
                                         <input type="password" class="form-control @error('password') is-invalid @enderror"
                                             id="password" name="password" placeholder="Password" required>
@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="no_hp" class="col-sm-2 control-label">No HP</label>
+                                    <label for="no_hp" class="col-sm-2 control-label">No HP :</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control @error('no_hp') is-invalid @enderror"
                                             id="no_hp" name="no_hp" placeholder="No HP" value="{{ old('no_hp') }}"
@@ -93,7 +93,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan</label>
+                                    <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan :</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control @error('pekerjaan') is-invalid @enderror"
                                             id="pekerjaan" name="pekerjaan" placeholder="Pekerjaan"
@@ -147,6 +147,14 @@
                     confirmButtonText: 'OK'
                 });
             @endif
+        });
+
+        $('#no_hp').on('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        $('#nama_lengkap, #pekerjaan').on('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
         });
     </script>
 @endsection

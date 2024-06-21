@@ -13,44 +13,44 @@
                         <div class="form-horizontal">
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="nama_lengkap" class="col-sm-2 control-label">Nama Lengkap:</label>
+                                    <label for="nama_lengkap" class="col-sm-2 control-label">Nama Lengkap :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $user->nama_lengkap }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="username" class="col-sm-2 control-label">Username:</label>
+                                    <label for="username" class="col-sm-2 control-label">Username :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $user->username }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="tanggal_lahir" class="col-sm-2 control-label">Tanggal Lahir:</label>
+                                    <label for="tanggal_lahir" class="col-sm-2 control-label">Tanggal Lahir :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">
                                             {{ \Carbon\Carbon::parse($user->tanggal_lahir)->format('d-m-Y') }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="jenis_kelamin" class="col-sm-2 control-label">Jenis Kelamin:</label>
+                                    <label for="jenis_kelamin" class="col-sm-2 control-label">Jenis Kelamin :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $user->jenis_kelamin }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="no_hp" class="col-sm-2 control-label">No HP:</label>
+                                    <label for="no_hp" class="col-sm-2 control-label">No HP :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $user->no_hp }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan:</label>
+                                    <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $user->pekerjaan }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="created_at" class="col-sm-2 control-label">Dibuat pada:</label>
+                                    <label for="created_at" class="col-sm-2 control-label">Dibuat pada :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">
                                             {{ \Carbon\Carbon::parse($user->created_at)->format('d-m-Y H:i:s') }}
@@ -58,7 +58,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="updated_at" class="col-sm-2 control-label">Diperbarui pada:</label>
+                                    <label for="updated_at" class="col-sm-2 control-label">Diperbarui pada :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">
                                             {{ \Carbon\Carbon::parse($user->updated_at)->format('d-m-Y H:i:s') }}

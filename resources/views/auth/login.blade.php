@@ -66,7 +66,6 @@
             <div class="login-logo">
                 <b><i class="fa fa-hospital-o"></i> SIREBI</b>
             </div>
-
             <form action="{{ route('login') }}" method="post">
                 @csrf
                 <div class="form-group has-feedback">
@@ -84,7 +83,7 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">
+                        <button type="submit" class="btn btn-success btn-block btn-flat">
                             <i class="fa fa-sign-in"></i>
                             Login</button>
                     </div>

@@ -135,6 +135,7 @@
             $('.datepicker').datepicker({
                 autoclose: true,
                 format: 'dd-mm-yyyy',
+                clearBtn: true,
                 startDate: new Date() // Memperbolehkan memilih tanggal dari hari ini ke depan
             });
 

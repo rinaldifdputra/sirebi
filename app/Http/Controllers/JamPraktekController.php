@@ -83,6 +83,13 @@ class JamPraktekController extends Controller
     public function destroy($id)
     {
         try {
+            $jamPraktek = T_JamPraktek::findOrFail($id);
+
+            // Cek apakah ada jadwal praktek yang menggunakan jam praktek ini
+            if ($jamPraktek->jadwal()->exists()) {
+                return back()->withErrors(['error' => 'Jam praktek tidak bisa dihapus karena sudah digunakan dalam jadwal praktek.']);
+            }
+
             T_JamPraktek::destroy($id);
             return redirect()->route('jam_praktek.index')->with('success', 'Jam praktek berhasil dihapus.');
         } catch (\Exception $e) {

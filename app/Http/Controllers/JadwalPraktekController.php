@@ -250,6 +250,13 @@ class JadwalPraktekController extends Controller
     public function destroy($id)
     {
         try {
+            $jadwal = T_JadwalPraktek::findOrFail($id);
+
+            // Cek apakah ada jadwal praktek yang menggunakan jam praktek ini
+            if ($jadwal->reservasi()->exists() || $jadwal->reservasi_lama()->exists()) {
+                return back()->withErrors(['error' => 'Jadwal praktek tidak bisa dihapus karena sudah digunakan dalam reservasi.']);
+            }
+
             T_JadwalPraktek::destroy($id);
             return redirect()->route('praktek_bidan.index')->with('success', 'Jadwal praktek berhasil dihapus.');
         } catch (\Exception $e) {

@@ -14,32 +14,32 @@
                             @csrf
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="tanggal" class="col-sm-2 control-label">Tanggal:</label>
+                                    <label for="tanggal" class="col-sm-2 control-label">Tanggal :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $jadwalPraktek->tanggal }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="jam_praktek_id" class="col-sm-2 control-label">Jam Praktek:</label>
+                                    <label for="jam_praktek_id" class="col-sm-2 control-label">Jam Praktek :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $jadwalPraktek->jam_praktek->jam_mulai }} -
                                             {{ $jadwalPraktek->jam_praktek->jam_selesai }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="bidan_id" class="col-sm-2 control-label">Bidan:</label>
+                                    <label for="bidan_id" class="col-sm-2 control-label">Bidan :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $jadwalPraktek->bidan->nama_lengkap }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kuota" class="col-sm-2 control-label">Kuota:</label>
+                                    <label for="kuota" class="col-sm-2 control-label">Kuota :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $jadwalPraktek->kuota }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kuota" class="col-sm-2 control-label">Sisa Kuota:</label>
+                                    <label for="kuota" class="col-sm-2 control-label">Sisa Kuota :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $sisaKuota }}</p>
                                     </div>
