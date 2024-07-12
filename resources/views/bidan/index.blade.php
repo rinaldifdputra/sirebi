@@ -103,7 +103,7 @@
 
             $('#searchJenisKelamin').on('change', function() {
                 var value = $(this).val();
-                table.columns(4).search(value).draw();
+                table.columns(3).search(value).draw();
             });
 
             // Datepicker

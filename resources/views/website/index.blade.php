@@ -14,11 +14,8 @@
                     <img class="d-block w-100" src="{{ asset('website/assets/images/slider/slide-02.jpg') }}"
                         alt="First slide">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5 class=" bounceInDown">Best Free Hospital Template</h5>
-                        <p class=" bounceInLeft">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam justo
-                            neque, <br>
-                            aliquet sit amet elementum vel, vehicula eget eros. Vivamus arcu metus, mattis <br>
-                            sed sagittis at, sagittis quis neque. Praesent.</p>
+                        <h5 class=" bounceInDown">{{ $tentang_kami->judul }}</h5>
+                        <p class=" bounceInLeft" style="text-align: justify">{!! $tentang_kami->deskripsi !!}</p>
 
                     </div>
                 </div>
@@ -27,11 +24,8 @@
                     <img class="d-block w-100" src="{{ asset('website/assets/images/slider/slide-03.jpg') }}"
                         alt="Third slide">
                     <div class="carousel-caption vdg-cur d-none d-md-block">
-                        <h5 class=" bounceInDown">Best Free Hospital Template</h5>
-                        <p class=" bounceInLeft">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam justo
-                            neque, <br>
-                            aliquet sit amet elementum vel, vehicula eget eros. Vivamus arcu metus, mattis <br>
-                            sed sagittis at, sagittis quis neque. Praesent.</p>
+                        <h5 class=" bounceInDown">{{ $tentang_kami->judul }}</h5>
+                        <p class=" bounceInLeft" style="text-align: justify">{!! $tentang_kami->deskripsi !!}</p>
                     </div>
                 </div>
 
@@ -53,11 +47,11 @@
     <div class="top-msg">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-md-8 vkjd ohs">
+                <div class="col-lg-12 col-md-12 vkjd ohs">
                     <h2><i class="far fa-clock"></i> Jadwal Praktek</h2>
-                    <table class="table table-bordered data-table table-striped" style="width: 100%">
+                    <table class="table table-bordered" id="data-table" style="width: 100%">
                         <thead>
-                            <tr>
+                            <tr id="header">
                                 <th>No</th>
                                 <th>Tanggal</th>
                                 <th>Jam Praktek</th>
@@ -80,10 +74,6 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-lg-2 col-md-3 vkjd">
-                    <h2><i class="fas fa-phone"></i> Emergency</h2>
-                    <h4>1-898-8767-568</h4>
-                </div>
             </div>
         </div>
     </div>
@@ -98,54 +88,16 @@
                 @foreach ($bidan as $item)
                     <div class="col-md-3 col-sm-6">
                         <div class="single-usr">
-                            <img src="website/assets/images/team/team-memb2.jpg" alt="">
+                            <img src="{{ asset('website/assets/images/nurse.png') }}" alt="">
                             <div class="det-o">
                                 <h4>{{ $item->nama_lengkap }}</h4>
-                                <i>{{ $item->pekerjaan }}</i>
+                                <i>Bidan</i>
                             </div>
                         </div>
                     </div>
                 @endforeach
-                {{-- <div class="col-md-3 col-sm-6">
-                    <div class="single-usr">
-                        <img src="website/assets/images/team/team-memb1.jpg" alt="">
-                        <div class="det-o">
-                            <h4>David Kanuel</h4>
-                            <i>Facial Surgan</i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="single-usr">
-                        <img src="website/assets/images/team/team-memb2.jpg" alt="">
-                        <div class="det-o">
-                            <h4>David Kanuel</h4>
-                            <i>Facial Surgan</i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="single-usr">
-                        <img src="website/assets/images/team/team-memb3.jpg" alt="">
-                        <div class="det-o">
-                            <h4>David Kanuel</h4>
-                            <i>Facial Surgan</i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div class="single-usr">
-                        <img src="website/assets/images/team/team-memb4.jpg" alt="">
-                        <div class="det-o">
-                            <h4>David Kanuel</h4>
-                            <i>Facial Surgan</i>
-                        </div>
-                    </div>
-                </div> --}}
             </div>
         </div>
-
-
     </section>
     <!-- ################# Testimonial Starts Here#######################--->
     <section class="testimonial-container">
@@ -156,33 +108,25 @@
             <div class="row">
                 <div class="col-md-offset-2 float-auto col-md-10">
                     <div id="testimonial-slider" class="owl-carousel">
-                        <div class="testimonial">
-                            <div class="pic">
-                                <img src="website/assets/images/testimonial/member-01.jpg" alt="">
-                            </div>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda deleniti dolor ipsum
-                                molestias mollitia ut. Aliquam aperiam corporis cumque debitis delectus dignissimos.
-                                Lorem ipsum dolor sit amet, consectetur.
-                            </p>
-                            <h3 class="title">williamson
-                                <span class="post"> - Developer</span>
-                            </h3>
-                        </div>
 
-                        <div class="testimonial">
-                            <div class="pic">
-                                <img src="website/assets/images/testimonial/member-02.jpg" alt="">
+                        @foreach ($testimoni as $items)
+                            <div class="testimonial">
+                                <div class="pic">
+                                    @if ($items->testimoni->jenis_kelamin == 'Laki-Laki')
+                                        <img src="{{ asset('website/assets/images/pasien_pria.png') }}" alt="">
+                                    @elseif ($items->testimoni->jenis_kelamin == 'Perempuan')
+                                        <img src="{{ asset('website/assets/images/pasien_wanita.png') }}" alt="">
+                                    @endif
+                                </div>
+                                <p class="description">
+                                    {!! $items->deskripsi !!}
+                                </p>
+                                <h3 class="title">{{ $items->testimoni->nama_lengkap }}
+                                    <span class="post"> -
+                                        {{ $items->testimoni->pekerjaan->nama_pekerjaan }}</span>
+                                </h3>
                             </div>
-                            <p class="description">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda deleniti dolor ipsum
-                                molestias mollitia ut. Aliquam aperiam corporis cumque debitis delectus dignissimos.
-                                Lorem ipsum dolor sit amet, consectetur.
-                            </p>
-                            <h3 class="title">Kristina
-                                <span class="post"> - Teacher</span>
-                            </h3>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

@@ -16,12 +16,17 @@ class User extends Authenticatable
     public $incrementing = false;
 
     protected $fillable = [
-        'nama_lengkap', 'tanggal_lahir', 'jenis_kelamin', 'username', 'password', 'no_hp', 'role', 'pekerjaan', 'created_by', 'updated_by'
+        'nama_lengkap', 'tanggal_lahir', 'jenis_kelamin', 'username', 'password', 'no_hp', 'role', 'pekerjaan_id', 'created_by', 'updated_by'
     ];
 
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function pekerjaan()
+    {
+        return $this->belongsTo(T_Pekerjaan::class, 'pekerjaan_id', 'id');
+    }
 
     public function bidan()
     {
@@ -31,6 +36,11 @@ class User extends Authenticatable
     public function pasien()
     {
         return $this->hasMany(T_ReservasiBidan::class, 'pasien_id', 'id');
+    }
+
+    public function testimoni()
+    {
+        return $this->hasMany(CMS_Testimoni::class, 'pasien_id', 'id');
     }
 
     protected static function boot()

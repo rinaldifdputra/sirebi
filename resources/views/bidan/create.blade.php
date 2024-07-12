@@ -37,30 +37,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Jenis Kelamin :</label>
-                                    <div class="col-sm-10">
-                                        <div class="form-check">
-                                            <input class="form-check-input @error('jenis_kelamin') is-invalid @enderror"
-                                                type="radio" name="jenis_kelamin" id="laki-laki" value="Laki-Laki"
-                                                {{ old('jenis_kelamin') == 'Laki-Laki' ? 'checked' : '' }} required>
-                                            <label class="form-check-label" for="laki-laki">
-                                                Laki-Laki
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input @error('jenis_kelamin') is-invalid @enderror"
-                                                type="radio" name="jenis_kelamin" id="perempuan" value="Perempuan"
-                                                {{ old('jenis_kelamin') == 'Perempuan' ? 'checked' : '' }} required>
-                                            <label class="form-check-label" for="perempuan">
-                                                Perempuan
-                                            </label>
-                                            @error('jenis_kelamin')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label for="username" class="col-sm-2 control-label">Username :</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control @error('username') is-invalid @enderror"
@@ -88,17 +64,6 @@
                                             id="no_hp" name="no_hp" placeholder="No HP" value="{{ old('no_hp') }}"
                                             required>
                                         @error('no_hp')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan :</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control @error('pekerjaan') is-invalid @enderror"
-                                            id="pekerjaan" name="pekerjaan" placeholder="Pekerjaan"
-                                            value="{{ old('pekerjaan') }}" required>
-                                        @error('pekerjaan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>

@@ -39,32 +39,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Jenis Kelamin :</label>
-                                    <div class="col-sm-10">
-                                        <div class="form-check">
-                                            <input class="form-check-input @error('jenis_kelamin') is-invalid @enderror"
-                                                type="radio" name="jenis_kelamin" id="laki-laki" value="Laki-Laki"
-                                                {{ old('jenis_kelamin', $user->jenis_kelamin) == 'Laki-Laki' ? 'checked' : '' }}
-                                                required>
-                                            <label class="form-check-label" for="laki-laki">
-                                                Laki-Laki
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input @error('jenis_kelamin') is-invalid @enderror"
-                                                type="radio" name="jenis_kelamin" id="perempuan" value="Perempuan"
-                                                {{ old('jenis_kelamin', $user->jenis_kelamin) == 'Perempuan' ? 'checked' : '' }}
-                                                required>
-                                            <label class="form-check-label" for="perempuan">
-                                                Perempuan
-                                            </label>
-                                            @error('jenis_kelamin')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label for="username" class="col-sm-2 control-label">Username :</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control @error('username') is-invalid @enderror"
@@ -86,22 +60,10 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan :</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control @error('pekerjaan') is-invalid @enderror"
-                                            id="pekerjaan" name="pekerjaan" placeholder="Pekerjaan"
-                                            value="{{ old('pekerjaan', $user->pekerjaan) }}" required>
-                                        @error('pekerjaan')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <a href="{{ route('bidan.index') }}" class="btn btn-danger"><i
-                                        class="fa fa-arrow-left"></i>
+                                <a href="{{ route('bidan.index') }}" class="btn btn-danger"><i class="fa fa-arrow-left"></i>
                                     Batal</a>
                                 <button type="submit" class="btn btn-success pull-right"><i class="fa fa-save"></i>
                                     Simpan</button>

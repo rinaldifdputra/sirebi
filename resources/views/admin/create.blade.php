@@ -92,17 +92,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan :</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control @error('pekerjaan') is-invalid @enderror"
-                                            id="pekerjaan" name="pekerjaan" placeholder="Pekerjaan"
-                                            value="{{ old('pekerjaan') }}" required>
-                                        @error('pekerjaan')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">

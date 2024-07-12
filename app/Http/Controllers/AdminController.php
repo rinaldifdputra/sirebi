@@ -10,6 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
@@ -36,7 +37,6 @@ class AdminController extends Controller
                 'username' => 'required|string|unique:users',
                 'password' => 'required|string',
                 'no_hp' => 'required|string',
-                'pekerjaan' => 'required|string',
             ]);
 
             $user = new User();
@@ -48,7 +48,6 @@ class AdminController extends Controller
             $user->password = Hash::make($request->password);
             $user->no_hp = $request->no_hp;
             $user->role = 'Admin';
-            $user->pekerjaan = $request->pekerjaan;
             $user->created_by = Auth::id();
             $user->updated_by = Auth::id();
             $user->save();
@@ -74,7 +73,6 @@ class AdminController extends Controller
                 'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
                 'username' => 'required|string|unique:users,username,' . $id,
                 'no_hp' => 'required|string',
-                'pekerjaan' => 'required|string',
             ]);
 
             $user = User::findOrFail($id);
@@ -83,7 +81,6 @@ class AdminController extends Controller
             $user->jenis_kelamin = $request->jenis_kelamin;
             $user->username = $request->username;
             $user->no_hp = $request->no_hp;
-            $user->pekerjaan = $request->pekerjaan;
             $user->updated_by = Auth::id();
 
             $user->save();
@@ -105,15 +102,20 @@ class AdminController extends Controller
         try {
             $user = User::findOrFail($id);
 
-            // Cek apakah ada jadwal praktek yang menggunakan jam praktek ini
-            if ($user->reservasi()->exists() || $user->reservasi_lama()->exists()) {
-                return back()->withErrors(['error' => 'Admin sudah ada di tabel lain.']);
+            // Cek relasi dengan tabel lain
+            $hasRelations = $user->bidan()->exists() || $user->pasien()->exists() ||
+                DB::table('t_jam_praktek')->where('created_by', $id)->orWhere('updated_by', $id)->exists() ||
+                DB::table('t_jadwal_praktek')->where('created_by', $id)->orWhere('updated_by', $id)->orWhere('bidan_id', $id)->exists() ||
+                DB::table('t_reservasi_bidan')->where('created_by', $id)->orWhere('updated_by', $id)->orWhere('pasien_id', $id)->exists();
+
+            if ($hasRelations) {
+                return back()->withErrors(['error' => 'Gagal menghapus admin karena sudah digunakan pada data transaksi.']);
             }
 
-            User::destroy($id);
-            return redirect()->route('admin.index')->with('success', 'Admin berhasil dihapus.');
-        } catch (Exception $e) {
-            Log::error('Error deleting user: ' . $e->getMessage());
+            $user->delete();
+
+            return redirect()->route('admin.index')->with('success', 'admin berhasil dihapus.');
+        } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal menghapus admin: ' . $e->getMessage()]);
         }
     }

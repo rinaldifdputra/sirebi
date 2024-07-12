@@ -44,12 +44,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan :</label>
-                                    <div class="col-sm-10">
-                                        <p class="form-control-static">{{ $user->pekerjaan }}</p>
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label for="created_at" class="col-sm-2 control-label">Dibuat pada :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">

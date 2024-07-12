@@ -7,9 +7,13 @@ use App\Http\Controllers\BidanController;
 use App\Http\Controllers\BidanDashboardController;
 use App\Http\Controllers\JadwalPraktekController;
 use App\Http\Controllers\JamPraktekController;
+use App\Http\Controllers\LayananKamiController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PasienDashboardController;
+use App\Http\Controllers\PekerjaanController;
 use App\Http\Controllers\ReservasiBidanController;
+use App\Http\Controllers\TentangKamiController;
+use App\Http\Controllers\TestimoniController;
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,9 +29,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [WebsiteController::class, 'index'])->name('website.index');
-Route::get('/about', [WebsiteController::class, 'about'])->name('website.about');
-Route::get('/service', [WebsiteController::class, 'service'])->name('website.service');
-Route::get('/contact', [WebsiteController::class, 'contact'])->name('website.contact');
+Route::get('/website/tentang_kami', [WebsiteController::class, 'tentang_kami'])->name('website.tentang_kami');
+Route::get('/website/layanan_kami', [WebsiteController::class, 'layanan_kami'])->name('website.layanan_kami');
+Route::get('/website/hubungi_kami', [WebsiteController::class, 'hubungi_kami'])->name('website.hubungi_kami');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -39,6 +43,10 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::resource('pasien', PasienController::class);
     Route::resource('bidan', BidanController::class);
     Route::resource('jam_praktek', JamPraktekController::class);
+    Route::resource('pekerjaan', PekerjaanController::class);
+    Route::resource('tentang_kami', TentangKamiController::class);
+    Route::resource('layanan_kami', LayananKamiController::class);
+    Route::resource('testimoni', TestimoniController::class);
 
     Route::get('/admin_dashboard/dashboard', [AdminDashboardController::class, 'index'])->name('admin_dashboard.dashboard');
     // Rute lain untuk admin

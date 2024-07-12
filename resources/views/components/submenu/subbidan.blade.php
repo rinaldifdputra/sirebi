@@ -1,5 +1,7 @@
 <ul class="sidebar-menu" data-widget="tree">
-    <li class="header">Transaksi</li>
+    <li class="header">
+        <h5><b>Transaksi</b></h5>
+    </li>
     <li class="{{ request()->is('praktek_bidan/index') || request()->is('jadwal_praktek*') ? 'active' : '' }}">
         <a href="{{ route('praktek_bidan.index') }}">
             <i class="fa fa-book"></i> <span>Jadwal Praktek Bidan</span>

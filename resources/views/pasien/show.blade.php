@@ -46,7 +46,7 @@
                                 <div class="form-group">
                                     <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan :</label>
                                     <div class="col-sm-10">
-                                        <p class="form-control-static">{{ $user->pekerjaan }}</p>
+                                        <p class="form-control-static">{{ $user->pekerjaan->nama_pekerjaan }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">

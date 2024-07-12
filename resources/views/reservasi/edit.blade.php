@@ -17,7 +17,9 @@
                                 <div class="form-group">
                                     <label for="tanggal" class="col-sm-2 control-label">Tanggal :</label>
                                     <div class="col-sm-10">
-                                        <p class="form-control-static">{{ $jadwalPraktek->tanggal }}</p>
+                                        <p class="form-control-static">
+                                            {{ \Carbon\Carbon::parse($jadwalPraktek->tanggal)->format('d-m-Y') }}
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="form-group">

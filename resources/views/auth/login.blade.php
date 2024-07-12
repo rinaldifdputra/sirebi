@@ -55,7 +55,9 @@
     <!-- Google Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
     <link rel="stylesheet" href="{{ asset('cms/custom_style.css') }}">
+
 </head>
 
 
@@ -79,7 +81,7 @@
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="row">
-                    <div class="col-xs-8">
+                    <div class="col-xs-7">
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">

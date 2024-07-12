@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\T_Pekerjaan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,7 +65,8 @@ class AuthController extends Controller
 
     public function showRegisterForm()
     {
-        return view('auth.register');
+        $pekerjaan = T_Pekerjaan::orderBy('nama_pekerjaan', 'ASC')->get();
+        return view('auth.register', compact('pekerjaan'));
     }
 
     public function register(Request $request)
@@ -77,7 +79,7 @@ class AuthController extends Controller
                 'username' => 'required|string|unique:users',
                 'password' => 'required|string',
                 'no_hp' => 'required|string',
-                'pekerjaan' => 'required|string',
+                'pekerjaan_id' => 'required|string',
             ]);
 
             $pasienUuid = Str::uuid();
@@ -91,7 +93,7 @@ class AuthController extends Controller
             $user->password = Hash::make($request->password);
             $user->no_hp = $request->no_hp;
             $user->role = 'Pasien';
-            $user->pekerjaan = $request->pekerjaan;
+            $user->pekerjaan_id = $request->pekerjaan_id;
             $user->created_by = $pasienUuid;
             $user->updated_by = $pasienUuid;
             $user->save();

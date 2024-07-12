@@ -32,21 +32,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="jenis_kelamin" class="col-sm-2 control-label">Jenis Kelamin :</label>
-                                    <div class="col-sm-10">
-                                        <p class="form-control-static">{{ $user->jenis_kelamin }}</p>
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label for="no_hp" class="col-sm-2 control-label">No HP :</label>
                                     <div class="col-sm-10">
                                         <p class="form-control-static">{{ $user->no_hp }}</p>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan :</label>
-                                    <div class="col-sm-10">
-                                        <p class="form-control-static">{{ $user->pekerjaan }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">

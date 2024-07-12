@@ -4,13 +4,21 @@
     margin-right: auto;
 }
 
+#header {
+    background-color: #a5238e;
+    /* background-color: #1c77c3; */
+    /* background-color: #a5238e; */
+    color: #fff;
+    text-align: center;
+}
+
 .our-team .team-row .single-usr .det-o {
     padding: 20px;
-    background-color: #3c8dbc;
+    background-color: #a5238e;
 }
 
 .top-msg h2 i {
-    color: #3c8dbc;
+    color: #a5238e;
     font-size: 16px;
     margin-right: 10px;
 }
@@ -24,11 +32,11 @@ header .call i {
     height: 50px;
     text-align: center;
     font-size: 20px;
-    color: #3c8dbc;
+    color: #a5238e;
 }
 
 .key-features .single-key i {
-    background-color: #3c8dbc;
+    background-color: #a5238e;
     padding: 20px;
     font-size: 42px;
     color: #FFF;

@@ -43,7 +43,9 @@
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" defer></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/select2/3.3.2/select2.css" type="text/css" rel="stylesheet">
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -176,13 +178,20 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan :</label>
+                                            <label for="pekerjaan_id" class="col-sm-2 control-label">Pekerjaan
+                                                :</label>
                                             <div class="col-sm-10">
-                                                <input type="text"
-                                                    class="form-control @error('pekerjaan') is-invalid @enderror"
-                                                    id="pekerjaan" name="pekerjaan" placeholder="Pekerjaan"
-                                                    value="{{ old('pekerjaan') }}" required>
-                                                @error('pekerjaan')
+                                                <select
+                                                    class="select2-container @error('pekerjaan_id') is-invalid @enderror"
+                                                    id="pekerjaan_id" name="pekerjaan_id" required>
+                                                    <option value=""></option>
+                                                    @foreach ($pekerjaan as $job)
+                                                        <option value="{{ $job->id }}"
+                                                            {{ old('pekerjaan_id') == $job->id ? 'selected' : '' }}>
+                                                            {{ $job->nama_pekerjaan }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('pekerjaan_id')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -249,6 +258,7 @@
     <script src="{{ asset('cms/dist/js/pages/dashboard.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('cms/dist/js/demo.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/select2/3.3.2/select2.js"></script>
     <script>
         $(document).ready(function() {
             // Add Reservation
@@ -304,8 +314,10 @@
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
-        $('#nama_lengkap, #pekerjaan').on('input', function() {
-            this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+        // Apply the select2 dropdown search
+        $('#pekerjaan_id').select2({
+            placeholder: 'Pilih Pekerjaan',
+            allowClear: true
         });
     </script>
 </body>

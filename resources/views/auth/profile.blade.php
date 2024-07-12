@@ -43,12 +43,14 @@
                                         <p class="form-control-static">{{ $user->no_hp }}</p>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan :</label>
-                                    <div class="col-sm-10">
-                                        <p class="form-control-static">{{ $user->pekerjaan }}</p>
+                                @if ($user->role == 'Pasien')
+                                    <div class="form-group">
+                                        <label for="pekerjaan" class="col-sm-2 control-label">Pekerjaan :</label>
+                                        <div class="col-sm-10">
+                                            <p class="form-control-static">{{ $user->pekerjaan->nama_pekerjaan }}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                                 <div class="form-group">
                                     <label for="created_at" class="col-sm-2 control-label">Dibuat pada :</label>
                                     <div class="col-sm-10">

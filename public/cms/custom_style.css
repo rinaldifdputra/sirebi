@@ -1,12 +1,30 @@
-.skin-purple .sidebar-menu>li.header {
+/* .skin-purple .sidebar-menu>li.header {
     color: #fff;
     background: #1a2226;
+} */
+
+.skin-blue-light .main-header .navbar .nav>li>a {
+    color: #1a2226;
 }
 
 .skin-blue-light .sidebar-menu>li.header {
-    color: #000;
-    background: #f9fafc;
+    /* color: #000;
+    background: #f9fafc; */
+    /* color: #f9fafc; */
+    /* background-color: #1c77c3; */
+    /* background-color: #a5238e; */
+    /* background-color: #7a776e; */
+    /* color: #000;
+    background-color: #fff;
+    font-weight: 1000; */
+    color: #333;
+    background-color: #fff;
     font-weight: 1000;
+    border: 1px solid #ccc;
+    border-top-color: rgb(204, 204, 204);
+    border-right-color: rgb(204, 204, 204);
+    border-bottom-color: rgb(204, 204, 204);
+    border-left-color: rgb(204, 204, 204);
 }
 
 .select2-container {
@@ -95,17 +113,37 @@ td {
 }
 
 .skin-blue-light .main-header .navbar {
-    background-color: #1c77c3;
+    /* background-color: #1c77c3; */
+    /* background-color: #a5238e; */
+    background-color: #fff;
+    color: #1a2226;
 }
 
 .skin-blue-light .main-header .logo {
-    background-color: #1c77c3;
-    color: #fff;
+    /* background-color: #1c77c3;
+    color: #fff; */
+    background-color: #fff;
+    color: #1a2226;
     border-bottom: 0 solid transparent;
+}
+
+.skin-blue-light .main-header .navbar .sidebar-toggle {
+    color: #1a2226;
 }
 
 .skin-blue-light .main-header .navbar .sidebar-toggle:hover {
     background-color: #e08e0b;
+}
+
+.skin-blue-light .main-header .navbar .nav>li>a:hover,
+.skin-blue-light .main-header .navbar .nav>li>a:active,
+.skin-blue-light .main-header .navbar .nav>li>a:focus,
+.skin-blue-light .main-header .navbar .nav .open>a,
+.skin-blue-light .main-header .navbar .nav .open>a:hover,
+.skin-blue-light .main-header .navbar .nav .open>a:focus,
+.skin-blue-light .main-header .navbar .nav>.active>a {
+    background-color: #e08e0b;
+    color: #1a2226;
 }
 
 .skin-blue-light .main-header .logo:hover {
@@ -113,7 +151,8 @@ td {
 }
 
 #header {
-    background-color: #1c77c3;
+    background-color: #a5238e;
+    /* background-color: #1c77c3; */
     /* background-color: #3c8dbc; */
     color: #fff;
     text-align: center;
